@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYamls", "BuildYamls", 
 		services-core-eventGrid-build.yaml = services-core-eventGrid-build.yaml
 		services-core-serviceBus-build.yaml = services-core-serviceBus-build.yaml
 		web-core-build.yaml = web-core-build.yaml
+		web-core-kubernetes.yaml = web-core-kubernetes.yaml
 		web-full-build.yaml = web-full-build.yaml
 	EndProjectSection
 EndProject

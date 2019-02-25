@@ -22,19 +22,7 @@ steps:
     platform: '$(BuildPlatform)'
 
     configuration: '$(BuildConfiguration)'
-
-
-- task: VSTest@2
-  displayName: 'VsTest - testAssemblies'
-  inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\*test*.dll
-     !**\obj\**
-
-    platform: '$(BuildPlatform)'
-
-    configuration: '$(BuildConfiguration)'
-
+  condition: and(always(), ne(variables['BuildType'], 'Container'))
 
 - task: PublishSymbols@2
   displayName: 'Publish symbols path'
@@ -45,6 +33,26 @@ steps:
 
   enabled: false
   continueOnError: true
+  condition: and(always(), ne(variables['BuildType'], 'Container'))
+
+- task: Docker@0
+  displayName: 'Build a container image'
+  inputs:
+    azureSubscription: '${{ parameters.ConnectedServiceName }}'
+    azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ parameters.NamePrefix }}.azurecr.io", "id" : "/subscriptions/${{ parameters.SubscriptionId }}/resourceGroups/rg-${{ parameters.NamePrefix }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ parameters.NamePrefix }}"}'
+    imageName: 'contoso-travel-web:$(Build.BuildId)'
+    includeLatestTag: true
+	dockerFile: .gitattributes
+  condition: and(always(), eq(variables['BuildType'], 'Container'))
+
+- task: Docker@0
+  displayName: 'Push a container image'
+  inputs:
+    azureSubscription: '${{ parameters.ConnectedServiceName }}'
+    azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ parameters.NamePrefix }}.azurecr.io", "id" : "/subscriptions/${{ parameters.SubscriptionId }}/resourceGroups/rg-${{ parameters.NamePrefix }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ parameters.NamePrefix }}"}'
+    action: 'Push an image'
+    includeLatestTag: true
+  condition: and(always(), eq(variables['BuildType'], 'Container'))
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
@@ -52,6 +60,7 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
 
   enabled: false
+  condition: and(always(), ne(variables['BuildType'], 'Container'))
 
 - task: AzureRmWebAppDeployment@3
   displayName: 'Azure App Service Deploy: $(WebAppType) - $(WebAppName)'

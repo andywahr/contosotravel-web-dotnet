@@ -4,6 +4,7 @@ trigger: none
 variables:
   BuildConfiguration: ServicesCoreServiceBus
   BuildPlatform: Any CPU
+  BuildType: App
 
 jobs:
 - job: NetCore_ServiceBus_Function_Build_and_Deploy

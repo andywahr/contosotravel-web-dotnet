@@ -4,6 +4,7 @@ trigger: none
 variables:
   BuildConfiguration: WebFull
   BuildPlatform: Any CPU
+  BuildType: App
 
 jobs:
 - job: NetFramework_Web_Build_and_Deploy

@@ -1,0 +1,34 @@
+# a build with no CI
+trigger: none
+
+variables:
+  BuildConfiguration: WebCore
+  BuildPlatform: Any CPU
+  BuildType: Container
+
+jobs:
+- job: NetCore_Web_Build_and_Deploy
+  pool:
+    name: Hosted VS2017
+    demands: 
+    - msbuild
+    - visualstudio
+    - vstest
+  steps:
+  - template: ./build.yaml
+    parameters:
+      ConnectedServiceName: $(ConnectedServiceName)
+
+  - task: HelmInstaller@0
+    displayName: 'Install Helm 2.9.1'
+    inputs:
+      kubectlVersion: 1.10.3
+      checkLatestKubectl: true
+
+  - task: AzureCLI@1
+    displayName: 'Azure CLI - Running configuration.ps1 and Deploy'
+    inputs:
+      azureSubscription: '${{ parameters.ConnectedServiceName }}'
+      scriptPath: configure.ps1
+      arguments: '-rg rg-${{ parameters.NamePrefix }} -sub ${{ parameters.SubscriptionId }} -namePrefix ${{ parameters.NamePrefix }} -pathToDeploy src\Host.MVC.Core\webdeploy.yaml -includeNginx'
+      workingDirectory: arkhitekton-modules/Terraform/ContosoTravel/Kubernetes
