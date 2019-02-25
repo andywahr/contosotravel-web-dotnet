@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.IO;
 
 namespace ContosoTravel.Web.Host.MVC.Core
 {
@@ -37,6 +39,7 @@ namespace ContosoTravel.Web.Host.MVC.Core
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddHttpContextAccessor();
+            services.AddLogging();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

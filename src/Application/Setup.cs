@@ -60,7 +60,7 @@ namespace ContosoTravel.Web.Application
             }
 
             builder.RegisterInstance<ContosoConfiguration>(contsoConfig).AsSelf();
-            builder.RegisterAssemblyModules(mainAssembly, typeof(Application.ContosoConfiguration).Assembly);
+            builder.RegisterAssemblyModules(typeof(Application.ContosoConfiguration).Assembly, mainAssembly);
 
             if (buildHere)
             {
