@@ -19,6 +19,28 @@ jobs:
     parameters:
       ConnectedServiceName: $(ConnectedServiceName)
 
+  - powershell: |
+     mkdir (join-path $env:TEMP -ChildPath arkhitekton-modules)
+    displayName: 'mkdir arkhitekton-modules'
+
+  - powershell: |
+     $dir = (join-path $env:TEMP -ChildPath arkhitekton-modules)
+     cd $dir
+     $repoUrl = $env:REPO_URI.Replace('contosotravel-web-dotnet', 'arkhitekton-modules')
+     "$repoUrl"
+     git init $dir
+     git remote add origin $repoUrl
+     git config gc.auto 0
+     git config --get-all "http.$($repoUrl).extraheader"
+     git config --get-all http.proxy
+     git -c http.extraheader="AUTHORIZATION: bearer $env:SYSTEM_ACCESSTOKEN" fetch --tags --prune --progress --no-recurse-submodules origin
+     git checkout origin/master
+     ls $dir/*
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      REPO_URI: $(Build.Repository.Uri)
+    displayName: 'Get latest on modules repo'
+  
   - task: HelmInstaller@0
     displayName: 'Install Helm 2.9.1'
     inputs:
@@ -29,6 +51,6 @@ jobs:
     displayName: 'Azure CLI - Running configuration.ps1 and Deploy'
     inputs:
       azureSubscription: '${{ parameters.ConnectedServiceName }}'
-      scriptPath: configure.ps1
-      arguments: '-rg rg-${{ parameters.NamePrefix }} -sub ${{ parameters.SubscriptionId }} -namePrefix ${{ parameters.NamePrefix }} -pathToDeploy src\Host.MVC.Core\webdeploy.yaml -includeNginx'
-      workingDirectory: arkhitekton-modules/Terraform/ContosoTravel/Kubernetes
+      scriptPath: C:\Users\VssAdministrator\AppData\Local\Temp\arkhitekton-modules\configure.ps1
+      arguments: '-rg rg-${{ parameters.NamePrefix }} -sub ${{ parameters.SubscriptionId }} -namePrefix ${{ parameters.NamePrefix }} -pathToDeploy webdeploy.yaml -includeNginx'
+      workingDirectory: src\Host.MVC.Core\
