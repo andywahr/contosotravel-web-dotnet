@@ -5,26 +5,37 @@ variables:
   BuildConfiguration: WebCore
   BuildPlatform: Any CPU
   BuildType: Container
+  NamePrefix: $(NamePrefix)
+  SubscriptionId: $(SubscriptionId)
+  ConnectedServiceName: $(ConnectedServiceName)
 
 jobs:
-- job: NetCore_Web_Build_and_Deploy
+- job: NetCore_Web_Kubernetes
   pool:
-    name: Hosted VS2017
-    demands: 
-    - msbuild
-    - visualstudio
-    - vstest
+    name: Hosted Ubuntu 1604
+
   steps:
-  - template: ./build.yaml
-    parameters:
-      ConnectedServiceName: $(ConnectedServiceName)
+  - task: Docker@0
+    displayName: 'Build a container image'
+    inputs:
+      imageName: 'acrcontosotravel${{ variables.NamePrefix }}.azurecr.io/contoso-travel-web:$(Build.BuildId)'
+      includeLatestTag: true
+      dockerFile: src/HostCoreDockerfile
+      workingDirectory: '$(build.sourcesDirectory)/src'
+  
+  - task: Docker@0
+    displayName: 'Push a container image'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName }}'
+      azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ variables.NamePrefix }}.azurecr.io", "id":"/subscriptions/${{ variables.SubscriptionId }}/resourceGroups/rg-${{ variables.NamePrefix }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ variables.NamePrefix }}"}'
+      action: 'Push an image'
+      includeLatestTag: true
+      imageName: 'acrcontosotravel${{ variables.NamePrefix }}.azurecr.io/contoso-travel-web:$(Build.BuildId)'
+      workingDirectory: '$(build.sourcesDirectory)/src'
 
   - powershell: |
-     mkdir (join-path $env:TEMP -ChildPath arkhitekton-modules)
-    displayName: 'mkdir arkhitekton-modules'
-
-  - powershell: |
-     $dir = (join-path $env:TEMP -ChildPath arkhitekton-modules)
+     $dir = "/tmp/arkhitekton-modules"
+     mkdir $dir
      cd $dir
      $repoUrl = $env:REPO_URI.Replace('contosotravel-web-dotnet', 'arkhitekton-modules')
      "$repoUrl"
@@ -40,17 +51,11 @@ jobs:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       REPO_URI: $(Build.Repository.Uri)
     displayName: 'Get latest on modules repo'
-  
-  - task: HelmInstaller@0
-    displayName: 'Install Helm 2.9.1'
-    inputs:
-      kubectlVersion: 1.10.3
-      checkLatestKubectl: true
-
+ 
   - task: AzureCLI@1
     displayName: 'Azure CLI - Running configuration.ps1 and Deploy'
     inputs:
-      azureSubscription: '${{ parameters.ConnectedServiceName }}'
-      scriptPath: C:\Users\VssAdministrator\AppData\Local\Temp\arkhitekton-modules\configure.ps1
-      arguments: '-rg rg-${{ parameters.NamePrefix }} -sub ${{ parameters.SubscriptionId }} -namePrefix ${{ parameters.NamePrefix }} -pathToDeploy webdeploy.yaml -includeNginx'
-      workingDirectory: src\Host.MVC.Core\
+      azureSubscription: '${{ variables.ConnectedServiceName }}'
+      scriptPath: /tmp/arkhitekton-modules/Terraform/ContosoTravel/Kubernetes/configure.bash
+      arguments: 'rg-${{ variables.NamePrefix }} ${{ variables.SubscriptionId }} ${{ variables.NamePrefix }} /tmp/arkhitekton-modules/Terraform/ContosoTravel/web/websitekubernetes/webdeploy.yaml -includeNginx'
+      workingDirectory: $(Build.sourcesDirectory)

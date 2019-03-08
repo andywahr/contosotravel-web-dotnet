@@ -35,25 +35,6 @@ steps:
   continueOnError: true
   condition: and(always(), ne(variables['BuildType'], 'Container'))
 
-- task: Docker@0
-  displayName: 'Build a container image'
-  inputs:
-    azureSubscription: '${{ parameters.ConnectedServiceName }}'
-    azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ parameters.NamePrefix }}.azurecr.io", "id" : "/subscriptions/${{ parameters.SubscriptionId }}/resourceGroups/rg-${{ parameters.NamePrefix }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ parameters.NamePrefix }}"}'
-    imageName: 'contoso-travel-web:$(Build.BuildId)'
-    includeLatestTag: true
-	dockerFile: .gitattributes
-  condition: and(always(), eq(variables['BuildType'], 'Container'))
-
-- task: Docker@0
-  displayName: 'Push a container image'
-  inputs:
-    azureSubscription: '${{ parameters.ConnectedServiceName }}'
-    azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ parameters.NamePrefix }}.azurecr.io", "id" : "/subscriptions/${{ parameters.SubscriptionId }}/resourceGroups/rg-${{ parameters.NamePrefix }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ parameters.NamePrefix }}"}'
-    action: 'Push an image'
-    includeLatestTag: true
-  condition: and(always(), eq(variables['BuildType'], 'Container'))
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   inputs:
