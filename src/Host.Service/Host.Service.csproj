@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>ContosoTravel.Web.Host.Service</AssemblyName>
     <RootNamespace>ContosoTravel.Web.Host.Service</RootNamespace>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
