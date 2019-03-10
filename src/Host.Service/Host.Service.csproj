@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>ContosoTravel.Web.Host.Service</AssemblyName>
+    <RootNamespace>ContosoTravel.Web.Host.Service</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.6.1" />
+    <PackageReference Include="Topshelf" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\ConstosoTravel.Web.Function.EventGrid\Function.EventGrid.csproj" />
+    <ProjectReference Include="..\ContosoTravel.Web.Functions.ServiceBus\Functions.ServiceBus.csproj" />
+  </ItemGroup>
+
+</Project>
