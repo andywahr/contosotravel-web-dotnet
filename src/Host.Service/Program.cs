@@ -15,6 +15,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 
 namespace ContosoTravel.Web.Host.Service
 {
@@ -22,11 +23,13 @@ namespace ContosoTravel.Web.Host.Service
     {
         static async Task Main(string[] args)
         {
-            bool webJobs = false;
+            var configuration = new ConfigurationBuilder().AddJsonFile("appSettings.json", true).AddEnvironmentVariables().Build();
+
+            bool webJobs = string.Equals(configuration["WebJob"], "true", StringComparison.OrdinalIgnoreCase);
             if (webJobs)
             {
                 var sbAssem = PurchaseItineraryServiceBus._thisAssembly;
-                bool isService = true;
+
                 IHostBuilder builder = new HostBuilder();
                 builder.ConfigureWebJobs(b =>
                 {
@@ -37,19 +40,18 @@ namespace ContosoTravel.Web.Host.Service
                         config.MessageHandlerOptions.AutoComplete = true;
                         config.MessageHandlerOptions.MaxConcurrentCalls = 5;
                     });
+                  
                 });
 
                 builder.ConfigureLogging((context, b) =>
                 {
                     b.AddConsole();
                     b.SetMinimumLevel(LogLevel.Trace);
+                    b.AddApplicationInsights();
                 });
 
-                if (isService)
-                {
-                    builder = builder.UseServiceBaseLifetime();
-                }
-
+                builder = builder.UseServiceBaseLifetime();
+              
                 var host = builder.Build();
                 using (host)
                 {

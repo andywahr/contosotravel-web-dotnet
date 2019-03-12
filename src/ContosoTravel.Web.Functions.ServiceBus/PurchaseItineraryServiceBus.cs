@@ -22,7 +22,7 @@ namespace ContosoTravel.Web.Functions.ServiceBus
 
         static PurchaseItineraryServiceBus()
         {
-            _configuration = new ConfigurationBuilder().AddJsonFile("appSettings.json").AddEnvironmentVariables().Build();
+            _configuration = new ConfigurationBuilder().AddJsonFile("appSettings.json", true).AddEnvironmentVariables().Build();
             _thisAssembly = typeof(PurchaseItineraryServiceBus).Assembly;
         }
 

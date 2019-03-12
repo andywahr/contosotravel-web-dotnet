@@ -25,13 +25,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYamls", "BuildYamls", 
 		build.yaml = build.yaml
 		HostCoreDockerfile = HostCoreDockerfile
 		services-core-eventGrid-build.yaml = services-core-eventGrid-build.yaml
+		services-core-kubernetes-build.yaml = services-core-kubernetes-build.yaml
 		services-core-serviceBus-build.yaml = services-core-serviceBus-build.yaml
+		ServicesDockerFile = ServicesDockerFile
 		web-core-build.yaml = web-core-build.yaml
 		web-core-kubernetes.yaml = web-core-kubernetes.yaml
 		web-full-build.yaml = web-full-build.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host.Service", "Host.Service\Host.Service.csproj", "{E08A0B4E-9C96-465C-8DD2-356F6642AD93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Host.Service", "Host.Service\Host.Service.csproj", "{E08A0B4E-9C96-465C-8DD2-356F6642AD93}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

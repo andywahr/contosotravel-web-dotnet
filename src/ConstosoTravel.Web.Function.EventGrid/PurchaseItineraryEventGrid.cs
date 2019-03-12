@@ -22,7 +22,7 @@ namespace ContosoTravel.Web.Function.EventGrid
 
         static PurchaseItineraryEventGrid()
         {
-            _configuration = new ConfigurationBuilder().AddEnvironmentVariables().Build();
+            _configuration = new ConfigurationBuilder().AddJsonFile("appSettings.json", true).AddEnvironmentVariables().Build();
             _thisAssembly = typeof(PurchaseItineraryEventGrid).Assembly;
         }
 
