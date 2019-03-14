@@ -8,7 +8,6 @@ variables:
   NamePrefix: $(NamePrefix)
   SubscriptionId: $(SubscriptionId)
   ConnectedServiceName: $(ConnectedServiceName)
-  DeployTarget: $(DeployTarget)
 
 jobs:
 - job: NetCore_Services_Kubernetes
@@ -70,5 +69,5 @@ jobs:
     inputs:
       azureSubscription: '${{ variables.ConnectedServiceName }}'
       scriptPath: /tmp/arkhitekton-modules/Terraform/ContosoTravel/Kubernetes/configure.bash
-      arguments: 'rg-${{ variables.NamePrefix }} ${{ variables.SubscriptionId }} ${{ variables.NamePrefix }} /tmp/arkhitekton-modules/Terraform/ContosoTravel/web/websitekubernetes/webdeploy.yaml -includeNginx'
+      arguments: 'rg-${{ variables.NamePrefix }} ${{ variables.SubscriptionId }} ${{ variables.NamePrefix }} /tmp/arkhitekton-modules/Terraform/ContosoTravel/backend/kubernetes/webdeploy.yaml -includeNginx'
       workingDirectory: $(Build.sourcesDirectory)
