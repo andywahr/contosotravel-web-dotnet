@@ -20,7 +20,7 @@ jobs:
     inputs:
       imageName: 'acrcontosotravel${{ variables.NamePrefix }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
       includeLatestTag: true
-      dockerFile: src/HostCoreDockerfile
+      dockerFile: src/ServicesDockerFile
       workingDirectory: '$(build.sourcesDirectory)/src'
       buildArguments: IsWebJob=false
     condition: and(always(), ne(variables['eventing'], 'servicebus'))
@@ -30,7 +30,7 @@ jobs:
     inputs:
       imageName: 'acrcontosotravel${{ variables.NamePrefix }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
       includeLatestTag: true
-      dockerFile: src/HostCoreDockerfile
+      dockerFile: src/ServicesDockerFile
       workingDirectory: '$(build.sourcesDirectory)/src'
       buildArguments: IsWebJob=true
     condition: and(always(), eq(variables['eventing'], 'servicebus'))
