@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ContosoTravel.Web.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Host.MVC.Core.Controllers
+namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
     public class TestController : Controller
     {

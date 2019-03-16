@@ -376,6 +376,9 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.4\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
@@ -430,6 +433,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="ASPNetFullCartCookieProvider.cs" />
+    <Compile Include="Controllers\API\CarsController.cs" />
+    <Compile Include="Controllers\API\CartController.cs" />
+    <Compile Include="Controllers\API\FlightsController.cs" />
+    <Compile Include="Controllers\API\HotelsController.cs" />
+    <Compile Include="Controllers\API\ItineraryController.cs" />
+    <Compile Include="Controllers\API\TestController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
