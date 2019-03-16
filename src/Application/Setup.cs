@@ -33,6 +33,13 @@ namespace ContosoTravel.Web.Application
 
         public static IContainer InitCotoso(string keyVaultUrl, string currentDirectory, Assembly mainAssembly, ContainerBuilder builder = null, bool withDBSecrets = false)
         {
+            if ( string.IsNullOrEmpty(currentDirectory))
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                currentDirectory =  System.IO.Path.GetDirectoryName(Uri.UnescapeDataString(uri.Path));
+            }
+
             IConfigurationBuilder configBuilder = new ConfigurationBuilder().SetBasePath(currentDirectory);
 
             if (!string.IsNullOrEmpty(keyVaultUrl))
