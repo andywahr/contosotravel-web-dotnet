@@ -15,18 +15,21 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _hotelController = hotelController;
         }
 
+        [Route("hotels")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             return View("Search", await _hotelController.Index(cancellationToken));
         }
 
         [HttpPost]
+        [Route("hotels/search")]
         public async Task<IActionResult> Search(SearchModel searchRequest, CancellationToken cancellationToken)
         {
             return View("HotelResults", await _hotelController.Search(searchRequest, cancellationToken));
         }
 
         [HttpPost]
+        [Route("hotels/purchase")]
         public async Task<IActionResult> Purchase(HotelReservationModel hotel, CancellationToken cancellationToken)
         {
             await _hotelController.Purchase(hotel, cancellationToken);

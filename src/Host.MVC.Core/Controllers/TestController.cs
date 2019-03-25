@@ -17,6 +17,7 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _airportDataProvider = airportDataProvider;
         }
 
+        [Route("test")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             return View(ContosoTravel.Web.Application.Models.TestSettings.GetNewTest(await _airportDataProvider.GetAll(cancellationToken)));

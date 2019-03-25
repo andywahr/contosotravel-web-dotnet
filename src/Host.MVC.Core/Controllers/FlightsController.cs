@@ -19,18 +19,21 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _flightsController = flightController;
         }
 
+        [Route("flights")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             return View("Search", await _flightsController.Index(cancellationToken));
         }
 
         [HttpPost]
+        [Route("flights/search")]
         public async Task<IActionResult> Search(SearchModel searchRequest, CancellationToken cancellationToken)
         {
             return View("FlightResults", await _flightsController.Search(searchRequest, cancellationToken));
         }
 
         [HttpPost]
+        [Route("flights/purchase")]
         public async Task<IActionResult> Purchase(FlightReservationModel flight, CancellationToken cancellationToken)
         {
             await _flightsController.Purchase(flight, cancellationToken);

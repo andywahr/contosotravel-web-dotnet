@@ -13,6 +13,8 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
         {
             _itineraryController = itineraryController;
         }
+
+        [Route("itinerary")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken, string recordLocator = "")
         {
             if (string.IsNullOrEmpty(recordLocator))

@@ -14,6 +14,7 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _cartController = cartController;
         }
 
+        [Route("cart")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             var cart = await _cartController.Index(cancellationToken);
@@ -28,6 +29,7 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 
 
         [HttpPost]
+        [Route("cart/purchase")]
         public async Task<IActionResult> Purchase(System.DateTimeOffset PurchasedOn, CancellationToken cancellationToken)
         {
             if (await _cartController.Purchase(PurchasedOn, cancellationToken))
