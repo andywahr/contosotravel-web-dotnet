@@ -5,9 +5,6 @@ variables:
   BuildConfiguration: WebCore
   BuildPlatform: Any CPU
   BuildType: Container
-  NamePrefix: $(NamePrefix)
-  SubscriptionId: $(SubscriptionId)
-  ConnectedServiceName: $(ConnectedServiceName)
 
 jobs:
 - job: NetCore_Web_Kubernetes
