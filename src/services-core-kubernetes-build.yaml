@@ -1,21 +1,24 @@
 # a build with no CI
 trigger: none
 
-variables:
-  BuildConfiguration: WebCore
-  BuildPlatform: Any CPU
-  BuildType: Container
-
 jobs:
 - job: NetCore_Services_Kubernetes
   pool:
     name: Hosted Ubuntu 1604
 
+  variables:
+    BuildConfiguration: WebCore
+    BuildPlatform: Any CPU
+    BuildType: Container
+    NamePrefix_local: $(NamePrefix)
+    SubscriptionId_local: $(SubscriptionId)
+    ConnectedServiceName_local: $(ConnectedServiceName)
+
   steps:
   - task: Docker@0
     displayName: 'Build a container image'
     inputs:
-      imageName: 'acrcontosotravel${{ variables.NamePrefix }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
+      imageName: 'acrcontosotravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
       includeLatestTag: true
       dockerFile: src/ServicesDockerFile
       workingDirectory: '$(build.sourcesDirectory)/src'
@@ -25,7 +28,7 @@ jobs:
   - task: Docker@0
     displayName: 'Build a container image'
     inputs:
-      imageName: 'acrcontosotravel${{ variables.NamePrefix }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
+      imageName: 'acrcontosotravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
       includeLatestTag: true
       dockerFile: src/ServicesDockerFile
       workingDirectory: '$(build.sourcesDirectory)/src'
@@ -35,11 +38,11 @@ jobs:
   - task: Docker@0
     displayName: 'Push a container image'
     inputs:
-      azureSubscription: '${{ variables.ConnectedServiceName }}'
-      azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ variables.NamePrefix }}.azurecr.io", "id":"/subscriptions/${{ variables.SubscriptionId }}/resourceGroups/rg-${{ variables.NamePrefix }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ variables.NamePrefix }}"}'
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
+      azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ variables.NamePrefix_local }}.azurecr.io", "id":"/subscriptions/${{ variables.SubscriptionId_local }}/resourceGroups/rg-${{ variables.NamePrefix_local }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ variables.NamePrefix_local }}"}'
       action: 'Push an image'
       includeLatestTag: true
-      imageName: 'acrcontosotravel${{ variables.NamePrefix }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
+      imageName: 'acrcontosotravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-travel-service:$(Build.BuildId)'
       workingDirectory: '$(build.sourcesDirectory)/src'
 
   - powershell: |
@@ -64,7 +67,7 @@ jobs:
   - task: AzureCLI@1
     displayName: 'Azure CLI - Running configuration.ps1 and Deploy'
     inputs:
-      azureSubscription: '${{ variables.ConnectedServiceName }}'
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
       scriptPath: /tmp/arkhitekton-modules/Terraform/ContosoTravel/Kubernetes/configure.bash
-      arguments: 'rg-${{ variables.NamePrefix }} ${{ variables.SubscriptionId }} ${{ variables.NamePrefix }} /tmp/arkhitekton-modules/Terraform/ContosoTravel/backend/kubernetes/webdeploy.yaml -includeNginx'
+      arguments: 'rg-${{ variables.NamePrefix_local }} ${{ variables.SubscriptionId_local }} ${{ variables.NamePrefix_local }} /tmp/arkhitekton-modules/Terraform/ContosoTravel/backend/kubernetes/webdeploy.yaml -includeNginx'
       workingDirectory: $(Build.sourcesDirectory)

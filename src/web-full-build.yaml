@@ -5,6 +5,7 @@ variables:
   BuildConfiguration: WebFull
   BuildPlatform: Any CPU
   BuildType: App
+  ConnectedServiceName_local: $(ConnectedServiceName)
 
 jobs:
 - job: NetFramework_Web_Build_and_Deploy
@@ -17,4 +18,4 @@ jobs:
   steps:
   - template: ./build.yaml
     parameters:
-      ConnectedServiceName: $(ConnectedServiceName)
+      ConnectedServiceName: $(ConnectedServiceName_local)
