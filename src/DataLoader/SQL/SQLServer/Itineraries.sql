@@ -73,9 +73,6 @@ CREATE PROCEDURE dbo.UpsertItinerary
     @PurchasedOn               DateTimeOffset
 AS
     SET NOCOUNT ON
-    INSERT INTO Itineraries ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator], [PurchasedOn])
-                VALUES (@Id, @DepartingFlight, @ReturningFlight, @CarReservation, @CarReservationDuration, @HotelReservation, @HotelReservationDuration, @RecordLocator, @PurchasedOn)
-
     MERGE Itineraries AS target  
     USING (SELECT @Id, @DepartingFlight, @ReturningFlight, @CarReservation, @CarReservationDuration, @HotelReservation, @HotelReservationDuration, @RecordLocator) AS source ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator])  
     ON (target.Id = source.Id)  

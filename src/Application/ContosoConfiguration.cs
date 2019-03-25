@@ -53,6 +53,7 @@ namespace ContosoTravel.Web.Application
     {
         Mock,
         CosmosSQL,
-        SQL
+        SQL,
+        MySQL
     }
 }

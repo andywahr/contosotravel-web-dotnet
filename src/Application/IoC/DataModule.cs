@@ -72,31 +72,32 @@ namespace ContosoTravel.Web.Application.IoC
                     break;
 
                 case DataType.SQL:
-                    builder.RegisterType<Data.SQLServer.SQLServerProvider>()
+                case DataType.MySQL:
+                    builder.RegisterType<Data.SQL.SQLProvider>()
                            .AsSelf()
                            .SingleInstance();
 
-                    builder.RegisterType<Data.SQLServer.AirportDataSQLServerProvider>()
+                    builder.RegisterType<Data.SQL.AirportDataSQLProvider>()
                            .As<IAirportDataProvider>()
                            .SingleInstance();
 
-                    builder.RegisterType<Data.SQLServer.FlightDataSQLServerProvider>()
+                    builder.RegisterType<Data.SQL.FlightDataSQLProvider>()
                            .As<IFlightDataProvider>()
                            .SingleInstance();
 
-                    builder.RegisterType<Data.SQLServer.CarDataSQLServerProvider>()
+                    builder.RegisterType<Data.SQL.CarDataSQLProvider>()
                            .As<ICarDataProvider>()
                            .SingleInstance();
 
-                    builder.RegisterType<Data.SQLServer.HotelDataSQLServerProvider>()
+                    builder.RegisterType<Data.SQL.HotelDataSQLProvider>()
                            .As<IHotelDataProvider>()
                            .SingleInstance();
 
-                    builder.RegisterType<Data.SQLServer.CartDataSQLServerProvider>()
+                    builder.RegisterType<Data.SQL.CartDataSQLProvider>()
                            .As<ICartDataProvider>()
                            .SingleInstance();
 
-                    builder.RegisterType<Data.SQLServer.ItineraryDataSQLServerProvider>()
+                    builder.RegisterType<Data.SQL.ItineraryDataSQLProvider>()
                            .As<IItineraryDataProvider>()
                            .SingleInstance();
                     break;

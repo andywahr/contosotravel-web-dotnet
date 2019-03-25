@@ -6,14 +6,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ContosoTravel.Web.Application.Data.SQLServer
+namespace ContosoTravel.Web.Application.Data.SQL
 {
-    public class CarDataSQLServerProvider : ICarDataProvider, IWritableDataProvider<CarModel>
+    public class CarDataSQLProvider : ICarDataProvider, IWritableDataProvider<CarModel>
     {
-        private readonly SQLServerProvider _sqlServerProvider;
+        private readonly SQLProvider _sqlServerProvider;
         private readonly IAirportDataProvider _airportDataProvider;
 
-        public CarDataSQLServerProvider(SQLServerProvider sqlServerProvider, IAirportDataProvider airportDataProvider)
+        public CarDataSQLProvider(SQLProvider sqlServerProvider, IAirportDataProvider airportDataProvider)
         {
             _sqlServerProvider = sqlServerProvider;
             _airportDataProvider = airportDataProvider;

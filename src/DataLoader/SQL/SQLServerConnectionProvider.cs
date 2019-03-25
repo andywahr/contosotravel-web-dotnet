@@ -4,9 +4,9 @@ using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DataLoader.SQLServer
+namespace DataLoader.SQL
 {
-    public class SQLServerConnectionProvider : ISQLServerConnectionProvider
+    public class SQLServerConnectionProvider : ISQLConnectionProvider
     {
         private string _connectionString;
 
@@ -21,7 +21,7 @@ namespace DataLoader.SQLServer
             _connectionString = builder.ConnectionString;
         }
 
-        public async Task<SqlConnection> GetOpenConnection(CancellationToken cancellationToken)
+        public async Task<System.Data.IDbConnection> GetOpenConnection(CancellationToken cancellationToken)
         {
             var newConnection = new SqlConnection(_connectionString);
             await newConnection.OpenAsync(cancellationToken);

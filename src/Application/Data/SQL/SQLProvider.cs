@@ -7,13 +7,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace ContosoTravel.Web.Application.Data.SQLServer
+namespace ContosoTravel.Web.Application.Data.SQL
 {
-    public class SQLServerProvider
+    public class SQLProvider
     {
-        private readonly ISQLServerConnectionProvider _connectionProvider;
+        private readonly ISQLConnectionProvider _connectionProvider;
 
-        public SQLServerProvider(ISQLServerConnectionProvider connectionProvider)
+        public SQLProvider(ISQLConnectionProvider connectionProvider)
         {
             _connectionProvider = connectionProvider;
         }

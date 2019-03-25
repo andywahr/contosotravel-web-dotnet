@@ -2,22 +2,19 @@
 using ContosoTravel.Web.Application.Interfaces;
 using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DataLoader.SQLServer
+namespace DataLoader.SQL
 {
     public class SQLServerDeployment : IDataDeployment
     {
-        private readonly ISQLServerConnectionProvider _connectionProvider;
+        private readonly ISQLConnectionProvider _connectionProvider;
         private readonly ContosoConfiguration _contosoConfiguration;
 
-        public SQLServerDeployment(ISQLServerConnectionProvider connectionProvider, ContosoConfiguration contosoConfiguration)
+        public SQLServerDeployment(ISQLConnectionProvider connectionProvider, ContosoConfiguration contosoConfiguration)
         {
             _connectionProvider = connectionProvider;
             _contosoConfiguration = contosoConfiguration;
@@ -50,7 +47,7 @@ namespace DataLoader.SQLServer
         private string ReadResource(string name)
         {
             var assembly = typeof(SQLServerDeployment).Assembly;
-            using (StreamReader resource = new StreamReader(assembly.GetManifestResourceStream($"DataLoader.SQLServer.{name}")))
+            using (StreamReader resource = new StreamReader(assembly.GetManifestResourceStream($"DataLoader.SQL.SQLServer.{name}")))
             {
                 return resource.ReadToEnd();
             }

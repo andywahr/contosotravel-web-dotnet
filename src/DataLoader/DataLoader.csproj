@@ -8,13 +8,20 @@
   <ItemGroup>
     <None Remove="appsettings.Development.json" />
     <None Remove="appsettings.json" />
-    <None Remove="SQLServer\Airports.sql" />
-    <None Remove="SQLServer\Cars.sql" />
-    <None Remove="SQLServer\Carts.sql" />
-    <None Remove="SQLServer\ClearDb.sql" />
-    <None Remove="SQLServer\Flights.sql" />
-    <None Remove="SQLServer\Hotels.sql" />
-    <None Remove="SQLServer\Itineraries.sql" />
+    <None Remove="SQL\Airports.sql" />
+    <None Remove="SQL\Cars.sql" />
+    <None Remove="SQL\Carts.sql" />
+    <None Remove="SQL\ClearDb.sql" />
+    <None Remove="SQL\Flights.sql" />
+    <None Remove="SQL\Hotels.sql" />
+    <None Remove="SQL\Itineraries.sql" />
+    <None Remove="SQL\MySQL\Airports.sql" />
+    <None Remove="SQL\MySQL\Cars.sql" />
+    <None Remove="SQL\MySQL\Carts.sql" />
+    <None Remove="SQL\MySQL\ClearDb.sql" />
+    <None Remove="SQL\MySQL\Flights.sql" />
+    <None Remove="SQL\MySQL\Hotels.sql" />
+    <None Remove="SQL\MySQL\Itineraries.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,13 +39,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SQLServer\Airports.sql" />
-    <EmbeddedResource Include="SQLServer\Cars.sql" />
-    <EmbeddedResource Include="SQLServer\Carts.sql" />
-    <EmbeddedResource Include="SQLServer\ClearDb.sql" />
-    <EmbeddedResource Include="SQLServer\Flights.sql" />
-    <EmbeddedResource Include="SQLServer\Hotels.sql" />
-    <EmbeddedResource Include="SQLServer\Itineraries.sql" />
+    <EmbeddedResource Include="SQL\MySQL\Airports.sql" />
+    <EmbeddedResource Include="SQL\MySQL\Cars.sql" />
+    <EmbeddedResource Include="SQL\MySQL\Carts.sql" />
+    <EmbeddedResource Include="SQL\MySQL\ClearDb.sql" />
+    <EmbeddedResource Include="SQL\MySQL\Flights.sql" />
+    <EmbeddedResource Include="SQL\MySQL\Hotels.sql" />
+    <EmbeddedResource Include="SQL\MySQL\Itineraries.sql" />
+    <EmbeddedResource Include="SQL\SQLServer\Airports.sql" />
+    <EmbeddedResource Include="SQL\SQLServer\Cars.sql" />
+    <EmbeddedResource Include="SQL\SQLServer\Carts.sql" />
+    <EmbeddedResource Include="SQL\SQLServer\ClearDb.sql" />
+    <EmbeddedResource Include="SQL\SQLServer\Flights.sql" />
+    <EmbeddedResource Include="SQL\SQLServer\Hotels.sql" />
+    <EmbeddedResource Include="SQL\SQLServer\Itineraries.sql" />
   </ItemGroup>
 
   <ItemGroup>

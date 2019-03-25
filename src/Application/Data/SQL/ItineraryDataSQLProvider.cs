@@ -7,13 +7,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace ContosoTravel.Web.Application.Data.SQLServer
+namespace ContosoTravel.Web.Application.Data.SQL
 {
-    public class ItineraryDataSQLServerProvider : IItineraryDataProvider
+    public class ItineraryDataSQLProvider : IItineraryDataProvider
     {
-        private readonly SQLServerProvider _sqlServerProvider;
+        private readonly SQLProvider _sqlServerProvider;
 
-        public ItineraryDataSQLServerProvider(SQLServerProvider sqlServerProvider)
+        public ItineraryDataSQLProvider(SQLProvider sqlServerProvider)
         {
             _sqlServerProvider = sqlServerProvider;
         }

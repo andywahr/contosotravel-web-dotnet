@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ContosoTravel.Web.Functions.EventGrid
 {
-    public class SQLServerConnectionProvider : ISQLServerConnectionProvider
+    public class SQLServerConnectionProvider : ISQLConnectionProvider
     {
         private string _connectionString;
 
@@ -24,7 +24,7 @@ namespace ContosoTravel.Web.Functions.EventGrid
             _connectionString = builder.ConnectionString;
         }
 
-        public async Task<SqlConnection> GetOpenConnection(CancellationToken cancellationToken)
+        public async Task<System.Data.IDbConnection> GetOpenConnection(CancellationToken cancellationToken)
         {
             var newConnection = new SqlConnection(_connectionString);
             await newConnection.OpenAsync(cancellationToken);

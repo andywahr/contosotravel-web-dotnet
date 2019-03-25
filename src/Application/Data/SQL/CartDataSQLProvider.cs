@@ -7,13 +7,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace ContosoTravel.Web.Application.Data.SQLServer
+namespace ContosoTravel.Web.Application.Data.SQL
 {
-    public class CartDataSQLServerProvider : ICartDataProvider
+    public class CartDataSQLProvider : ICartDataProvider
     {
-        private readonly SQLServerProvider _sqlServerProvider;
+        private readonly SQLProvider _sqlServerProvider;
 
-        public CartDataSQLServerProvider(SQLServerProvider sqlServerProvider)
+        public CartDataSQLProvider(SQLProvider sqlServerProvider)
         {
             _sqlServerProvider = sqlServerProvider;
         }

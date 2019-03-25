@@ -4,7 +4,7 @@ using ContosoTravel.Web.Application.Data.Mock;
 using ContosoTravel.Web.Application.Interfaces;
 using ContosoTravel.Web.Application.Models;
 using DataLoader.CosmosDB;
-using DataLoader.SQLServer;
+using DataLoader.SQL;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,8 +34,13 @@ namespace DataLoader
             switch (ContosoConfiguration.DataType)
             {
                 case DataType.SQL:
-                    builder.RegisterType<SQLServerConnectionProvider>().As<ISQLServerConnectionProvider>().SingleInstance();
+                    builder.RegisterType<SQLServerConnectionProvider>().As<ISQLConnectionProvider>().SingleInstance();
                     builder.RegisterType<SQLServerDeployment>().As<IDataDeployment>().SingleInstance();
+                    break;
+
+                case DataType.MySQL:
+                    builder.RegisterType<ContosoTravel.Web.Application.Data.MySQL.MySQLProvider>().As<ISQLConnectionProvider>();
+                    builder.RegisterType<MySQLDeployment>().As<IDataDeployment>().SingleInstance();
                     break;
 
                 case DataType.CosmosSQL:

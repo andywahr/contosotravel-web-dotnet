@@ -5,13 +5,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ContosoTravel.Web.Application.Data.SQLServer
+namespace ContosoTravel.Web.Application.Data.SQL
 {
-    public class AirportDataSQLServerProvider : IAirportDataProvider, IWritableDataProvider<AirportModel>
+    public class AirportDataSQLProvider : IAirportDataProvider, IWritableDataProvider<AirportModel>
     {
-        private readonly SQLServerProvider _sqlServerProvider;
+        private readonly SQLProvider _sqlServerProvider;
 
-        public AirportDataSQLServerProvider(SQLServerProvider sqlServerProvider)
+        public AirportDataSQLProvider(SQLProvider sqlServerProvider)
         {
             _sqlServerProvider = sqlServerProvider;
         }

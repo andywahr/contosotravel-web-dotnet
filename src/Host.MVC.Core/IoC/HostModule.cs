@@ -12,7 +12,16 @@ namespace ContosoTravel.Web.Host.MVC.Core.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ASPNetCoreCartCookieProvider>().As<ICartCookieProvider>();
-            builder.RegisterType<SQLServerConnectionProvider>().As<ISQLServerConnectionProvider>();
+            switch (Application.ContosoConfiguration.DataType)
+            {
+                case Application.DataType.SQL:
+                    builder.RegisterType<SQLServerConnectionProvider>().As<ISQLConnectionProvider>();
+                    break;
+
+                case Application.DataType.MySQL:
+                    builder.RegisterType<Application.Data.MySQL.MySQLProvider>().As<ISQLConnectionProvider>();
+                    break;
+            }
         }
     }
 }

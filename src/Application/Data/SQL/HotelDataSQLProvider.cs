@@ -7,14 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace ContosoTravel.Web.Application.Data.SQLServer
+namespace ContosoTravel.Web.Application.Data.SQL
 {
-    public class HotelDataSQLServerProvider : IHotelDataProvider, IWritableDataProvider<HotelModel>
+    public class HotelDataSQLProvider : IHotelDataProvider, IWritableDataProvider<HotelModel>
     {
-        private readonly SQLServerProvider _sqlServerProvider;
+        private readonly SQLProvider _sqlServerProvider;
         private readonly IAirportDataProvider _airportDataProvider;
 
-        public HotelDataSQLServerProvider(SQLServerProvider sqlServerProvider, IAirportDataProvider airportDataProvider)
+        public HotelDataSQLProvider(SQLProvider sqlServerProvider, IAirportDataProvider airportDataProvider)
         {
             _sqlServerProvider = sqlServerProvider;
             _airportDataProvider = airportDataProvider;
