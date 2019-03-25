@@ -28,7 +28,8 @@ namespace DataLoader.SQL
             {
                 await connection.OpenAsync(cancellationToken);
 
-                await Run(connection, cancellationToken, $"CREATE USER '{_contosoConfiguration.DataAccountUserName}'@'%' IDENTIFIED BY '{_contosoConfiguration.DataAccountPassword}';\nGRANT EXECUTE ON *.* TO '{_contosoConfiguration.DataAccountUserName}'@'%' WITH GRANT OPTION;");
+                await Run(connection, cancellationToken, $"CREATE USER IF NOT EXISTS '{_contosoConfiguration.DataAccountUserName}'@'%' IDENTIFIED BY '{_contosoConfiguration.DataAccountPassword}';\nGRANT EXECUTE ON *.* TO '{_contosoConfiguration.DataAccountUserName}'@'%' WITH GRANT OPTION;");
+                await Run(connection, cancellationToken, ReadResource("ClearDb.sql"));
                 await Run(connection, cancellationToken, ReadResource("Airports.sql"));
                 await Run(connection, cancellationToken, ReadResource("Cars.sql"));
                 await Run(connection, cancellationToken, ReadResource("Flights.sql"));

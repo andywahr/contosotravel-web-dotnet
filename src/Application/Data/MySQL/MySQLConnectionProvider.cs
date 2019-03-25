@@ -1,5 +1,7 @@
 ﻿using ContosoTravel.Web.Application.Interfaces;
+using Dapper;
 using MySql.Data.MySqlClient;
+using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +15,10 @@ namespace ContosoTravel.Web.Application.Data.MySQL
         public MySQLProvider(ContosoConfiguration contosoConfig)
         {
             _contosoConfig = contosoConfig;
+            SqlMapper.RemoveTypeMap(typeof(DateTimeOffset));
+            SqlMapper.RemoveTypeMap(typeof(DateTimeOffset?));
+
+            SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public async Task<IDbConnection> GetOpenConnection(CancellationToken cancellationToken)
