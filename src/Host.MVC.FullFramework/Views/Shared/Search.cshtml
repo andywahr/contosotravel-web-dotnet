@@ -9,37 +9,36 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 </div>
 
-@using (Html.BeginForm("Search", Model.SearchMode.ToString(), FormMethod.Post, new { @class = "form-inline" }))
-{
-    <input asp-for="StartLocation" name="StartLocation" class="form-control col-sm-2" placeholder="@Model.StartLocationLabel" list="airPorts" />
-    if (Model.IncludeEndLocation)
-    {
-        <input asp-for="EndLocation" name="EndLocation" class="form-control col-sm-2" placeholder="@Model.EndLocationLabel" list="airPorts" />
-    }
-    <datalist id="airPorts">
-        @foreach (var airport in Model.AirPorts.OrderBy(air => air.AirportName))
+    <form action="/@Model.SearchMode.ToString()/search" class="form-inline" method="post">
+        <input asp-for="StartLocation" name="StartLocation" class="form-control col-sm-2" placeholder="@Model.StartLocationLabel" list="airPorts" />
+        @if (Model.IncludeEndLocation)
         {
-            <option value="@airport.AirportCode">@airport.AirportName</option>
+            <input asp-for="EndLocation" name="EndLocation" class="form-control col-sm-2" placeholder="@Model.EndLocationLabel" list="airPorts" />
         }
-    </datalist>
-    <div class='input-group date md-3' id='StartDate'>
-        <input type='@(Model.SearchMode == ContosoTravel.Web.Application.Models.SearchMode.Hotels ? "date" : "datetime-local")' class="form-control" placeholder="@Model.StartDateLabel" name="StartDate" />
-        <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-        </span>
-    </div>
+        <datalist id="airPorts">
+            @foreach (var airport in Model.AirPorts.OrderBy(air => air.AirportName))
+            {
+                <option value="@airport.AirportCode">@airport.AirportName</option>
+            }
+        </datalist>
+        <div class='input-group date md-3' id='StartDate'>
+            <input type='@(Model.SearchMode == ContosoTravel.Web.Application.Models.SearchMode.Hotels ? "date" : "datetime-local")' class="form-control" placeholder="@Model.StartDateLabel" name="StartDate" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
 
-    <div class='input-group date md-3' id='EndDate'>
-        <input type='@(Model.SearchMode == ContosoTravel.Web.Application.Models.SearchMode.Hotels ? "date" : "datetime-local")' class="form-control" placeholder="@Model.EndDateLabel" name="EndDate" />
-        <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-        </span>
-    </div>
+        <div class='input-group date md-3' id='EndDate'>
+            <input type='@(Model.SearchMode == ContosoTravel.Web.Application.Models.SearchMode.Hotels ? "date" : "datetime-local")' class="form-control" placeholder="@Model.EndDateLabel" name="EndDate" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
 
-    <input type="submit" value="Find @Model.SearchMode.ToString()" class="btn btn-primary" />
-}
+        <input type="submit" value="Find @Model.SearchMode.ToString()" class="btn btn-primary" />
+    </form>
 
-@section Scripts {
-    @{Html.RenderPartial("_ValidationScriptsPartial");}
-}
+    @section Scripts {
+        @{Html.RenderPartial("_ValidationScriptsPartial");}
+    }
 
