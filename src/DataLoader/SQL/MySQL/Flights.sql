@@ -58,5 +58,6 @@ CREATE PROCEDURE FindFlights(
 BEGIN
     SELECT Id, DepartingFrom, ArrivingAt, DepartureTime, ArrivalTime, Duration, Cost FROM FLIGHTS
     WHERE DepartingFrom = DepartingFrom AND ArrivingAt = ArrivingAt AND 
-    DepartureTime between DateAdd(s, -1 * SecondsOffset, DesiredTime) AND DateAdd(s, SecondsOffset, DesiredTime);
+    DepartureTime between DATE_SUB(DesiredTime, INTERVAL SecondsOffset SECOND) AND (DATE_ADD(DesiredTime, INTERVAL SecondsOffset SECOND));
 END
+GO

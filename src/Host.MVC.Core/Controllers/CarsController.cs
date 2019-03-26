@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
+    [Route("[controller]")]
     public class CarsController : Controller
     {
         private readonly ICarsController _carsController;
@@ -15,25 +16,25 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _carsController = carsController;
         }
 
-        [Route("cars")]
+        [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             return View("Search", await _carsController.Index(cancellationToken));
         }
 
         [HttpPost]
-        [Route("cars/search")]
+        [Route("search")]
         public async Task<IActionResult> Search(SearchModel searchRequest, CancellationToken cancellationToken)
         {
             return View("CarResults", await _carsController.Search(searchRequest, cancellationToken));
         }
 
         [HttpPost]
-        [Route("cars/purchase")]
+        [Route("purchase")]
         public async Task<IActionResult> Purchase(CarReservationModel car, CancellationToken cancellationToken)
         {
             await _carsController.Purchase(car, cancellationToken);
-            return RedirectToAction("Index", "Cart");
+            return Redirect("/Cart");
         }
     }
 }

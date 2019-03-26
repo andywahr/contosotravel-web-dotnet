@@ -6,8 +6,7 @@
 
 <h2>Hotel Search Results</h2>
 
-@using (Html.BeginForm("Purchase", "Hotels", FormMethod.Post, new { @class = "form-inline" }))
-{
+<form action="/Hotels/purchase" class="form-inline" method="post">
     <div>
         @foreach (var hotel in Model.Hotels.OrderBy(h => h.Cost))
         {
@@ -17,5 +16,5 @@
         <input type="hidden" name="NumberOfDays" value="@Model.NumberOfDays" />
         <input type="submit" value="Add To Cart" class="btn btn-success" />
     </div>
-}
+</form>
 

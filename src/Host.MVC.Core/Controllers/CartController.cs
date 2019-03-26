@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
+    [Route("[controller]")]
     public class CartController : Controller
     {
         private readonly ICartController _cartController;
@@ -14,7 +15,7 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _cartController = cartController;
         }
 
-        [Route("cart")]
+        [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             var cart = await _cartController.Index(cancellationToken);
@@ -29,12 +30,12 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 
 
         [HttpPost]
-        [Route("cart/purchase")]
+        [Route("purchase")]
         public async Task<IActionResult> Purchase(System.DateTimeOffset PurchasedOn, CancellationToken cancellationToken)
         {
             if (await _cartController.Purchase(PurchasedOn, cancellationToken))
             {
-                return RedirectToAction("Index", "Itinerary");
+                return Redirect("/Itinerary");
             }
 
             return View("FailedToPurchase");

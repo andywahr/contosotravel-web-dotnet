@@ -60,9 +60,9 @@ CREATE PROCEDURE UpsertItinerary(
     PurchasedOn               TIMESTAMP
 )
 BEGIN
-	INSERT INTO Itineraries (Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration, RecordLocator)
+	INSERT INTO Itineraries (Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration, RecordLocator, PurchasedOn)
 	VALUES 
-	   (source.Id, source.DepartingFlight, source.ReturningFlight, source.CarReservation, source.CarReservationDuration, source.HotelReservation, source.HotelReservationDuration, source.RecordLocator)
-	ON DUPLICATE KEY UPDATE DepartingFlight = source.DepartingFlight, ReturningFlight = source.ReturningFlight, CarReservation = source.CarReservation, CarReservationDuration = source.CarReservationDuration, HotelReservation = source.HotelReservation, HotelReservationDuration = source.HotelReservationDuration, RecordLocator = source.RecordLocator;  
+	   (Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration, RecordLocator, PurchasedOn)
+	ON DUPLICATE KEY UPDATE DepartingFlight = DepartingFlight, ReturningFlight = ReturningFlight, CarReservation = CarReservation, CarReservationDuration = CarReservationDuration, HotelReservation = HotelReservation, HotelReservationDuration = HotelReservationDuration, RecordLocator = RecordLocator, PurchasedOn = PurchasedOn;  
 END
 GO

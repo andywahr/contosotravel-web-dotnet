@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
+    [Route("[controller]")]
     public class TestController : Controller
     {
         private readonly IAirportDataProvider _airportDataProvider;
@@ -17,7 +18,7 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _airportDataProvider = airportDataProvider;
         }
 
-        [Route("test")]
+        [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             return View(ContosoTravel.Web.Application.Models.TestSettings.GetNewTest(await _airportDataProvider.GetAll(cancellationToken)));

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
+    [Route("[controller]")]
     public class FlightsController : Controller
     {
         private readonly IFlightsController _flightsController;
@@ -19,25 +20,26 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _flightsController = flightController;
         }
 
-        [Route("flights")]
+        [HttpGet]
+        [Route("/")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             return View("Search", await _flightsController.Index(cancellationToken));
         }
 
         [HttpPost]
-        [Route("flights/search")]
+        [Route("search")]
         public async Task<IActionResult> Search(SearchModel searchRequest, CancellationToken cancellationToken)
         {
             return View("FlightResults", await _flightsController.Search(searchRequest, cancellationToken));
         }
 
         [HttpPost]
-        [Route("flights/purchase")]
+        [Route("purchase")]
         public async Task<IActionResult> Purchase(FlightReservationModel flight, CancellationToken cancellationToken)
         {
             await _flightsController.Purchase(flight, cancellationToken);
-            return RedirectToAction("Index", "Cart");
+            return Redirect("/Cart");
         }
     }
 }

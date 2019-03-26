@@ -22,9 +22,9 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
         public async Task<FlightModel> FindFlight(int flightId, CancellationToken cancellationToken)
         {
-            return await ResolveAirport((await _sqlServerProvider.Query<SQLServerFindByIdParam, FlightModel>("FindFlightById",
+            return ResolveAirport((await _sqlServerProvider.Query<SQLServerFindByIdParam, FlightModel>("FindFlightById",
                                                                                         new SQLServerFindByIdParam() { Id = flightId },
-                                                                                        cancellationToken)).FirstOrDefault(), cancellationToken);
+                                                                                        cancellationToken)).FirstOrDefault(), await _airportDataProvider.GetAll(cancellationToken));
         }
 
         private class FindFlightsParams
@@ -75,16 +75,16 @@ namespace ContosoTravel.Web.Application.Data.SQL
             return true;
         }
 
-        private async Task<FlightModel> ResolveAirport(FlightModel flightModel, CancellationToken cancellationToken)
+        private FlightModel ResolveAirport(FlightModel flightModel, IEnumerable<AirportModel> allAirports)
         {
             if (!string.IsNullOrEmpty(flightModel?.DepartingFrom))
             {
-                flightModel.DepartingFromAiport = await _airportDataProvider.FindByCode(flightModel.DepartingFrom, cancellationToken);
+                flightModel.DepartingFromAiport = allAirports.SingleOrDefault(air => string.Equals(air.AirportCode, flightModel.DepartingFrom, StringComparison.OrdinalIgnoreCase));
             }
 
             if (!string.IsNullOrEmpty(flightModel?.ArrivingAt))
             {
-                flightModel.ArrivingAtAiport = await _airportDataProvider.FindByCode(flightModel.ArrivingAt, cancellationToken);
+                flightModel.ArrivingAtAiport = allAirports.SingleOrDefault(air => string.Equals(air.AirportCode, flightModel.ArrivingAt, StringComparison.OrdinalIgnoreCase));
             }
             return flightModel;
         }
@@ -93,9 +93,11 @@ namespace ContosoTravel.Web.Application.Data.SQL
         {
             if (flightModels != null && flightModels.Any())
             {
+                var allAirports = await _airportDataProvider.GetAll(cancellationToken);
+
                 foreach (var flight in flightModels)
                 {
-                    await ResolveAirport(flight, cancellationToken);
+                    ResolveAirport(flight, allAirports);
                 }
             }
 

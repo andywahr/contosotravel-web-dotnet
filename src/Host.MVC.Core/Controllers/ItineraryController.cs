@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
+    [Route("[controller]")]
     public class ItineraryController : Controller
     {
         private readonly IItineraryController _itineraryController;
@@ -14,7 +15,7 @@ namespace ContosoTravel.Web.Host.MVC.Core.Controllers
             _itineraryController = itineraryController;
         }
 
-        [Route("itinerary")]
+        [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken, string recordLocator = "")
         {
             if (string.IsNullOrEmpty(recordLocator))

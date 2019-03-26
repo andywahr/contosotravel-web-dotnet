@@ -10,8 +10,7 @@
 
 @Html.DisplayFor(m => Model)
 
-@using (Html.BeginForm("Purchase", "Cart", FormMethod.Post, new { @class = "form-inline" }))
-{
+<form action="/Cart/purchase" class="form-inline" method="post">
     <input type="hidden" name="PurchasedOn" value="@DateTimeOffset.UtcNow" />
     <input type="submit" value="Purchase" class="btn btn-success" />
-}
+</form>

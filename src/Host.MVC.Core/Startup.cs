@@ -65,12 +65,7 @@ namespace ContosoTravel.Web.Host.MVC.Core
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Flights}/{action=Index}/{id?}");
-            });
+            app.UseMvc();
 
             Application.Models.SiteModel.SiteTitle = "Contoso Travel - .Net Core";
         }

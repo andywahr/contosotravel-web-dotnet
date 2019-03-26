@@ -51,8 +51,8 @@ CREATE PROCEDURE UpsertCartFlights(
 BEGIN
 	INSERT INTO CARTS (Id, DepartingFlight, ReturningFlight)  
 	VALUES 
-	   (source.Id, source.DepartingFlight, source.ReturningFlight)
-	ON DUPLICATE KEY UPDATE DepartingFlight = source.DepartingFlight, ReturningFlight = source.ReturningFlight;        
+	   (Id, DepartingFlight, ReturningFlight)
+	ON DUPLICATE KEY UPDATE DepartingFlight = DepartingFlight, ReturningFlight = ReturningFlight;        
 END
 GO
 
@@ -66,8 +66,8 @@ CREATE PROCEDURE UpsertCartCar(
 BEGIN
 	INSERT INTO Carts (Id, CarReservation, CarReservationDuration)  
 	VALUES 
-	   (source.Id, source.CarReservation, source.CarReservationDuration)
-	ON DUPLICATE KEY UPDATE CarReservation = source.CarReservation, CarReservationDuration = source.CarReservationDuration;            
+	   (Id, CarReservation, CarReservationDuration)
+	ON DUPLICATE KEY UPDATE CarReservation = CarReservation, CarReservationDuration = CarReservationDuration;            
 END
 GO
 
@@ -81,7 +81,7 @@ CREATE PROCEDURE UpsertCartHotel(
 BEGIN
 	INSERT INTO Carts (Id, HotelReservation, HotelReservationDuration)  
 	VALUES 
-	   (source.Id, source.HotelReservation, source.HotelReservationDuration)
-	ON DUPLICATE KEY UPDATE HotelReservation = source.HotelReservation, HotelReservationDuration = source.HotelReservationDuration;      
+	   (Id, HotelReservation, HotelReservationDuration)
+	ON DUPLICATE KEY UPDATE HotelReservation = HotelReservation, HotelReservationDuration = HotelReservationDuration;      
 END
 GO

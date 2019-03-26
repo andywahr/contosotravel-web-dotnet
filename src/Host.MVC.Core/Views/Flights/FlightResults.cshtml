@@ -5,8 +5,7 @@
 
 <h2>Flight Search Results</h2>
 
-@using (Html.BeginForm("Purchase", "Flights", FormMethod.Post, new { @class = "form-inline" }))
-{
+<form action="/Flights/purchase" class="form-inline" method="post">
     <div>
         <h4>Departing Flights</h4>
         <hr />
@@ -33,6 +32,5 @@
         }
         <input type="submit" value="Add To Cart" class="btn btn-success" />
     </div>
-
-}
+</form>
 
