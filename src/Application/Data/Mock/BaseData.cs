@@ -22,10 +22,15 @@ namespace ContosoTravel.Web.Application.Data.Mock
     public static class BaseData
     {
         private static int _baseEntityKey = 0;
+        private static object _lockObject = new object();
 
         public static int GetNextKey()
         {
-            return System.Threading.Interlocked.Increment(ref _baseEntityKey);
+            lock (_lockObject)
+            {
+                _baseEntityKey = _baseEntityKey + 1;
+                return _baseEntityKey;
+            }
         }
         #region Airports
 
