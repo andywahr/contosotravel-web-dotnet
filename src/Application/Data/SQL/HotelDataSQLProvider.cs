@@ -23,20 +23,20 @@ namespace ContosoTravel.Web.Application.Data.SQL
         public async Task<HotelModel> FindHotel(int carId, CancellationToken cancellationToken)
         {
             return await ResolveAirport((await _sqlServerProvider.Query<SQLServerFindByIdParam, HotelModel>("FindHotelById",
-                                                                                    new SQLServerFindByIdParam() { Id = carId },
+                                                                                    new SQLServerFindByIdParam() { IdP = carId },
                                                                                     cancellationToken)).FirstOrDefault(), cancellationToken);
         }
 
         private class FindHotelsParms
         {
-            public string Location { get; set; }
-            public DateTimeOffset DesiredTime { get; set; }
+            public string LocationP { get; set; }
+            public DateTimeOffset DesiredTimeP { get; set; }
         }
 
         public async Task<IEnumerable<HotelModel>> FindHotels(string location, DateTimeOffset desiredTime, CancellationToken cancellationToken)
         {
             return await ResolveAirport(await _sqlServerProvider.Query<FindHotelsParms, HotelModel>("FindHotels",
-                                                                            new FindHotelsParms() { Location = location, DesiredTime = desiredTime },
+                                                                            new FindHotelsParms() { LocationP = location, DesiredTimeP = desiredTime },
                                                                             cancellationToken), cancellationToken);
         }
 

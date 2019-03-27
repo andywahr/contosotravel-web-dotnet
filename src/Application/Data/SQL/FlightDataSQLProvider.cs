@@ -23,16 +23,16 @@ namespace ContosoTravel.Web.Application.Data.SQL
         public async Task<FlightModel> FindFlight(int flightId, CancellationToken cancellationToken)
         {
             return ResolveAirport((await _sqlServerProvider.Query<SQLServerFindByIdParam, FlightModel>("FindFlightById",
-                                                                                        new SQLServerFindByIdParam() { Id = flightId },
+                                                                                        new SQLServerFindByIdParam() { IdP = flightId },
                                                                                         cancellationToken)).FirstOrDefault(), await _airportDataProvider.GetAll(cancellationToken));
         }
 
         private class FindFlightsParams
         {
-            public string DepartingFrom { get; set; }
-            public string ArrivingAt { get; set; }
-            public DateTimeOffset DesiredTime { get; set; }
-            public int SecondsOffset { get; set; }
+            public string DepartingFromP { get; set; }
+            public string ArrivingAtP { get; set; }
+            public DateTimeOffset DesiredTimeP { get; set; }
+            public int SecondsOffsetP { get; set; }
         }
 
         public async Task<IEnumerable<FlightModel>> FindFlights(string departingFrom, string arrivingAt, DateTimeOffset desiredTime, TimeSpan offset, CancellationToken cancellationToken)
@@ -40,10 +40,10 @@ namespace ContosoTravel.Web.Application.Data.SQL
             return await ResolveAirport(await _sqlServerProvider.Query<FindFlightsParams, FlightModel>("FindFlights",
                                                                                    new FindFlightsParams()
                                                                                    {
-                                                                                       DepartingFrom = departingFrom,
-                                                                                       ArrivingAt = arrivingAt,
-                                                                                       DesiredTime = desiredTime,
-                                                                                       SecondsOffset = (int)offset.TotalSeconds
+                                                                                       DepartingFromP = departingFrom,
+                                                                                       ArrivingAtP = arrivingAt,
+                                                                                       DesiredTimeP = desiredTime,
+                                                                                       SecondsOffsetP = (int)offset.TotalSeconds
                                                                                    },
                                                                                    cancellationToken), cancellationToken);
         }

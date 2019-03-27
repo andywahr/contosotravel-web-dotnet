@@ -27,42 +27,42 @@ GO
 DROP PROCEDURE IF EXISTS GetItineraryById
 GO
 CREATE PROCEDURE GetItineraryById(
-    Id VARCHAR(36)
+    IdP VARCHAR(36)
 )
 BEGIN
     SELECT Lower(Replace(Id,'-', '')) as Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration, RecordLocator, PurchasedOn FROM Itineraries
-    WHERE Id = Id;
+    WHERE Id = IdP;
 END
 GO
 
 DROP PROCEDURE IF EXISTS GetItineraryByRecordLocatorId
 GO
 CREATE PROCEDURE GetItineraryByRecordLocatorId(
-    RecordLocator varchar(10)
+    RecordLocatorP varchar(10)
 )
 BEGIN
     SELECT Lower(Replace(Id,'-', '')) as Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration, RecordLocator, PurchasedOn FROM Itineraries
-    WHERE RecordLocator = RecordLocator;
+    WHERE RecordLocator = RecordLocatorP;
 END
 GO
 
 DROP PROCEDURE IF EXISTS UpsertItinerary
 GO
 CREATE PROCEDURE UpsertItinerary(
-    Id                        VARCHAR(36),
-    DepartingFlight           int  ,
-    ReturningFlight           int  ,
-    CarReservation            int  ,
-    CarReservationDuration    FLOAT  ,
-    HotelReservation          int  ,
-    HotelReservationDuration  int  ,
-    RecordLocator             varchar(10),
-    PurchasedOn               TIMESTAMP
+    IdP                        VARCHAR(36),
+    DepartingFlightP           int  ,
+    ReturningFlightP          int  ,
+    CarReservationP           int  ,
+    CarReservationDurationP    FLOAT  ,
+    HotelReservationP          int  ,
+    HotelReservationDurationP  int  ,
+    RecordLocatorP             varchar(10),
+    PurchasedOnP              TIMESTAMP
 )
 BEGIN
 	INSERT INTO Itineraries (Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration, RecordLocator, PurchasedOn)
 	VALUES 
-	   (Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration, RecordLocator, PurchasedOn)
-	ON DUPLICATE KEY UPDATE DepartingFlight = DepartingFlight, ReturningFlight = ReturningFlight, CarReservation = CarReservation, CarReservationDuration = CarReservationDuration, HotelReservation = HotelReservation, HotelReservationDuration = HotelReservationDuration, RecordLocator = RecordLocator, PurchasedOn = PurchasedOn;  
+	   (IdP, DepartingFlightP, ReturningFlightP, CarReservationP, CarReservationDurationP, HotelReservationP, HotelReservationDurationP, RecordLocatorP, PurchasedOnP)
+	ON DUPLICATE KEY UPDATE DepartingFlight = DepartingFlightP, ReturningFlight = ReturningFlightP, CarReservation = CarReservationP, CarReservationDuration = CarReservationDurationP, HotelReservation = HotelReservationP, HotelReservationDuration = HotelReservationDurationP, RecordLocator = RecordLocatorP, PurchasedOn = PurchasedOnP;  
 END
 GO

@@ -29,11 +29,11 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.GetItineraryById
 GO
 CREATE PROCEDURE dbo.GetItineraryById
-    @Id UNIQUEIDENTIFIER
+    @IdP UNIQUEIDENTIFIER
 AS
     SET NOCOUNT ON
     SELECT Lower(Replace(Convert(varchar(36), [Id]),'-', '')) as Id, [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator], [PurchasedOn] FROM Itineraries
-    WHERE Id = @Id
+    WHERE Id = @IdP
 GO
 
 IF EXISTS (
@@ -45,11 +45,11 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.GetItineraryByRecordLocatorId
 GO
 CREATE PROCEDURE dbo.GetItineraryByRecordLocatorId
-    @RecordLocator [varchar](10)
+    @RecordLocatorP [varchar](10)
 AS
     SET NOCOUNT ON
     SELECT Lower(Replace(Convert(varchar(36), [Id]),'-', '')) as Id, [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator], [PurchasedOn] FROM Itineraries
-    WHERE RecordLocator = @RecordLocator
+    WHERE RecordLocator = @RecordLocatorP
 GO
 
 
@@ -62,19 +62,19 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.UpsertItinerary
 GO
 CREATE PROCEDURE dbo.UpsertItinerary
-    @Id                        [uniqueidentifier],
-    @DepartingFlight           [int]  null,
-    @ReturningFlight           [int]  null,
-    @CarReservation            [int]  null,
-    @CarReservationDuration    [FLOAT]  null,
-    @HotelReservation          [int]  null,
-    @HotelReservationDuration  [int]  null,
-    @RecordLocator             [varchar](10),
-    @PurchasedOn               DateTimeOffset
+    @IdP                        [uniqueidentifier],
+    @DepartingFlightP           [int]  null,
+    @ReturningFlightP           [int]  null,
+    @CarReservationP            [int]  null,
+    @CarReservationDurationP    [FLOAT]  null,
+    @HotelReservationP          [int]  null,
+    @HotelReservationDurationP  [int]  null,
+    @RecordLocatorP             [varchar](10),
+    @PurchasedOnP               DateTimeOffset
 AS
     SET NOCOUNT ON
     MERGE Itineraries AS target  
-    USING (SELECT @Id, @DepartingFlight, @ReturningFlight, @CarReservation, @CarReservationDuration, @HotelReservation, @HotelReservationDuration, @RecordLocator) AS source ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator])  
+    USING (SELECT @IdP, @DepartingFlightP, @ReturningFlightP, @CarReservationP, @CarReservationDurationP, @HotelReservationP, @HotelReservationDurationP, @RecordLocatorP) AS source ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator])  
     ON (target.Id = source.Id)  
     WHEN MATCHED THEN   
         UPDATE SET [Id] = source.[Id], [DepartingFlight] = source.[DepartingFlight], [ReturningFlight] = source.[ReturningFlight], [CarReservation] = source.[CarReservation], [CarReservationDuration] = source.[CarReservationDuration], [HotelReservation] = source.[HotelReservation], [HotelReservationDuration] = source.[HotelReservationDuration], [RecordLocator] = source.[RecordLocator]

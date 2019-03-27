@@ -27,11 +27,11 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.GetCartById
 GO
 CREATE PROCEDURE dbo.GetCartById
-    @Id UNIQUEIDENTIFIER
+    @IdP UNIQUEIDENTIFIER
 AS
     SET NOCOUNT ON
     SELECT  Lower(Replace(Convert(varchar(36), [Id]),'-', '')) as Id, [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration]  FROM Carts
-    WHERE Id = @Id
+    WHERE Id = @IdP
 GO
 
 IF EXISTS (
@@ -43,11 +43,11 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.DeleteCart
 GO
 CREATE PROCEDURE dbo.DeleteCart
-    @Id UNIQUEIDENTIFIER
+    @IdP UNIQUEIDENTIFIER
 AS
     SET NOCOUNT ON
     DELETE FROM Carts
-    WHERE Id = @Id
+    WHERE Id = @IdP
 GO
 
 IF EXISTS (
@@ -59,13 +59,13 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.UpsertCartFlights
 GO
 CREATE PROCEDURE dbo.UpsertCartFlights
-    @Id UNIQUEIDENTIFIER,
-    @DepartingFlight [int]  null,
-    @ReturningFlight [int]   null 
+    @IdP UNIQUEIDENTIFIER,
+    @DepartingFlightP [int]  null,
+    @ReturningFlightP [int]   null 
 AS
     SET NOCOUNT ON
     MERGE CARTS AS target  
-    USING (SELECT @Id, @DepartingFlight, @ReturningFlight) AS source (Id, DepartingFlight, ReturningFlight)  
+    USING (SELECT @IdP, @DepartingFlightP, @ReturningFlightP) AS source (Id, DepartingFlight, ReturningFlight)  
     ON (target.Id = source.Id)  
     WHEN MATCHED THEN   
         UPDATE SET DepartingFlight = source.DepartingFlight, ReturningFlight = source.ReturningFlight
@@ -83,13 +83,13 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.UpsertCartCar
 GO
 CREATE PROCEDURE dbo.UpsertCartCar
-    @Id UNIQUEIDENTIFIER,
-    @CarReservation [int]  null,
-    @CarReservationDuration [FLOAT]  null 
+    @IdP UNIQUEIDENTIFIER,
+    @CarReservationP [int]  null,
+    @CarReservationDurationP [FLOAT]  null 
 AS
     SET NOCOUNT ON
     MERGE CARTS AS target  
-    USING (SELECT @Id, @CarReservation, @CarReservationDuration) AS source (Id, CarReservation, CarReservationDuration)  
+    USING (SELECT @IdP, @CarReservationP, @CarReservationDurationP) AS source (Id, CarReservation, CarReservationDuration)  
     ON (target.Id = source.Id)  
     WHEN MATCHED THEN   
         UPDATE SET CarReservation = source.CarReservation, CarReservationDuration = source.CarReservationDuration
@@ -108,14 +108,14 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.UpsertCartHotel
 GO
 CREATE PROCEDURE dbo.UpsertCartHotel
-    @Id UNIQUEIDENTIFIER,
-    @HotelReservation [int] null,
-    @HotelReservationDuration [int]  null   
+    @IdP UNIQUEIDENTIFIER,
+    @HotelReservationP [int] null,
+    @HotelReservationDurationP [int]  null   
 AS
     SET NOCOUNT ON
 
     MERGE CARTS AS target  
-    USING (SELECT @Id, @HotelReservation, @HotelReservationDuration) AS source (Id, HotelReservation, HotelReservationDuration)  
+    USING (SELECT @IdP, @HotelReservationP, @HotelReservationDurationP) AS source (Id, HotelReservation, HotelReservationDuration)  
     ON (target.Id = source.Id)  
     WHEN MATCHED THEN   
         UPDATE SET HotelReservation = source.HotelReservation, HotelReservationDuration = source.HotelReservationDuration

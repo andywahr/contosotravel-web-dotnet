@@ -45,11 +45,11 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.FindHotelById
 GO
 CREATE PROCEDURE dbo.FindHotelById
-    @Id int
+    @IdP int
 AS
     SET NOCOUNT ON
     SELECT Id, [Location], StartingTime, EndingTime, Cost, RoomType FROM HOTELS
-    WHERE Id = @Id
+    WHERE Id = @IdP
 GO
 
 IF EXISTS (
@@ -61,10 +61,10 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.FindHotels
 GO
 CREATE PROCEDURE dbo.FindHotels
-    @Location [CHAR](3),
-    @DesiredTime [DATETIMEOFFSET]
+    @LocationP [CHAR](3),
+    @DesiredTimeP [DATETIMEOFFSET]
 AS
     SET NOCOUNT ON
     SELECT Id, [Location], StartingTime, EndingTime, Cost, RoomType FROM HOTELS
-    WHERE [Location] = @Location AND @DesiredTime between StartingTime AND EndingTime
+    WHERE [Location] = @LocationP AND @DesiredTimeP between StartingTime AND EndingTime
 GO

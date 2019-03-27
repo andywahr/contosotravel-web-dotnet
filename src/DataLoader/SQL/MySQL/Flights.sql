@@ -39,25 +39,25 @@ GO
 DROP PROCEDURE IF EXISTS FindFlightById
 GO
 CREATE PROCEDURE FindFlightById(
-    Id int
+    IdP int
 )
 BEGIN
     SELECT Id, DepartingFrom, ArrivingAt, DepartureTime, ArrivalTime, Duration, Cost FROM FLIGHTS
-    WHERE Id = Id;
+    WHERE Id = IdP;
 END
 GO
 
 DROP PROCEDURE IF EXISTS FindFlights
 GO
 CREATE PROCEDURE FindFlights(
-    DepartingFrom CHAR(3),
-    ArrivingAt CHAR(3),
-    DesiredTime TIMESTAMP,
-    SecondsOffset int
+    DepartingFromP CHAR(3),
+    ArrivingAtP CHAR(3),
+    DesiredTimeP TIMESTAMP,
+    SecondsOffsetP int
 )
 BEGIN
     SELECT Id, DepartingFrom, ArrivingAt, DepartureTime, ArrivalTime, Duration, Cost FROM FLIGHTS
-    WHERE DepartingFrom = DepartingFrom AND ArrivingAt = ArrivingAt AND 
-    DepartureTime between DATE_SUB(DesiredTime, INTERVAL SecondsOffset SECOND) AND (DATE_ADD(DesiredTime, INTERVAL SecondsOffset SECOND));
+    WHERE DepartingFrom = DepartingFromP AND ArrivingAt = ArrivingAtP AND 
+    DepartureTime between DATE_SUB(DesiredTimeP, INTERVAL SecondsOffsetP SECOND) AND (DATE_ADD(DesiredTimeP, INTERVAL SecondsOffsetP SECOND));
 END
 GO

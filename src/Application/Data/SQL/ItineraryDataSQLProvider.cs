@@ -20,56 +20,56 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
         private class ItineraryIdParams
         {
-            public Guid Id { get; set; }
+            public Guid IdP { get; set; }
         }
 
         public async Task<ItineraryPersistenceModel> FindItinerary(string cartId, CancellationToken cancellationToken)
         {
             return (await _sqlServerProvider.Query<ItineraryIdParams, ItineraryPersistenceModel>("GetItineraryById", new ItineraryIdParams()
             {
-                Id = Guid.Parse(cartId)
+                IdP = Guid.Parse(cartId)
             }, cancellationToken)).FirstOrDefault();
         }
 
         private class ItineraryByRecordLocatorParams
         {
-            public string RecordLocator { get; set; }
+            public string RecordLocatorP { get; set; }
         }
 
         public async Task<ItineraryPersistenceModel> GetItinerary(string recordLocator, CancellationToken cancellationToken)
         {
             return (await _sqlServerProvider.Query<ItineraryByRecordLocatorParams, ItineraryPersistenceModel>("GetItineraryByRecordLocatorId", new ItineraryByRecordLocatorParams()
             {
-                RecordLocator = recordLocator
+                RecordLocatorP = recordLocator
             }, cancellationToken)).FirstOrDefault();
         }
 
         private class ItineraryUpsertParams
         {
-            public Guid Id { get; set; }
-            public int? DepartingFlight { get; set; }
-            public int? ReturningFlight { get; set; }
-            public int? CarReservation { get; set; }
-            public double? CarReservationDuration { get; set; }
-            public int? HotelReservation { get; set; }
-            public int? HotelReservationDuration { get; set; }
-            public string RecordLocator { get; set; }
-            public DateTimeOffset PurchasedOn { get; set; }
+            public Guid IdP { get; set; }
+            public int? DepartingFlightP { get; set; }
+            public int? ReturningFlightP { get; set; }
+            public int? CarReservationP { get; set; }
+            public double? CarReservationDurationP { get; set; }
+            public int? HotelReservationP { get; set; }
+            public int? HotelReservationDurationP { get; set; }
+            public string RecordLocatorP { get; set; }
+            public DateTimeOffset PurchasedOnP { get; set; }
         }
 
         public async Task UpsertItinerary(ItineraryPersistenceModel itinerary, CancellationToken cancellationToken)
         {
             await _sqlServerProvider.Execute<ItineraryUpsertParams>("UpsertItinerary", new ItineraryUpsertParams()
             {
-                Id = Guid.Parse(itinerary.Id),
-                DepartingFlight = _sqlServerProvider.NullIfZero(itinerary.DepartingFlight),
-                ReturningFlight = _sqlServerProvider.NullIfZero(itinerary.ReturningFlight),
-                CarReservation = _sqlServerProvider.NullIfZero(itinerary.CarReservation),
-                CarReservationDuration = _sqlServerProvider.NullIfZero(itinerary.CarReservationDuration),
-                HotelReservation = _sqlServerProvider.NullIfZero(itinerary.HotelReservation),
-                HotelReservationDuration = _sqlServerProvider.NullIfZero(itinerary.HotelReservationDuration),
-                RecordLocator = itinerary.RecordLocator,
-                PurchasedOn = itinerary.PurchasedOn
+                IdP = Guid.Parse(itinerary.Id),
+                DepartingFlightP = _sqlServerProvider.NullIfZero(itinerary.DepartingFlight),
+                ReturningFlightP = _sqlServerProvider.NullIfZero(itinerary.ReturningFlight),
+                CarReservationP = _sqlServerProvider.NullIfZero(itinerary.CarReservation),
+                CarReservationDurationP = _sqlServerProvider.NullIfZero(itinerary.CarReservationDuration),
+                HotelReservationP = _sqlServerProvider.NullIfZero(itinerary.HotelReservation),
+                HotelReservationDurationP = _sqlServerProvider.NullIfZero(itinerary.HotelReservationDuration),
+                RecordLocatorP = itinerary.RecordLocator,
+                PurchasedOnP = itinerary.PurchasedOn
             }, cancellationToken);
         }
     }

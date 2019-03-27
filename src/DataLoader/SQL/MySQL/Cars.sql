@@ -34,22 +34,22 @@ GO
 DROP PROCEDURE IF EXISTS FindCarById
 GO
 CREATE PROCEDURE FindCarById(
-    Id int
+    IdP int
 )
 BEGIN
     SELECT Id, Location, StartingTime, EndingTime, Cost, CarType FROM CARS
-    WHERE Id = Id;
+    WHERE Id = IdP;
 END
 GO
 
 DROP PROCEDURE IF EXISTS FindCars
 GO
 CREATE PROCEDURE FindCars(
-    Location CHAR(3),
-    DesiredTime TIMESTAMP
+    LocationP CHAR(3),
+    DesiredTimeP TIMESTAMP
 )
 BEGIN
     SELECT Id, Location, StartingTime, EndingTime, Cost, CarType FROM CARS
-    WHERE Location = Location AND DesiredTime between StartingTime AND EndingTime;
+    WHERE Location = LocationP AND DesiredTimeP between StartingTime AND EndingTime;
 END
 GO

@@ -18,13 +18,13 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
         private class FindAiportByCodeParams
         {
-            public string AirportCode { get; set; }
+            public string AirportCodeP { get; set; }
         }
 
         public async Task<AirportModel> FindByCode(string airportCode, CancellationToken cancellationToken)
         {
             return (await _sqlServerProvider.Query<FindAiportByCodeParams, AirportModel>("FindAirportByCode", 
-                                                                                    new FindAiportByCodeParams () { AirportCode = airportCode }, 
+                                                                                    new FindAiportByCodeParams () { AirportCodeP = airportCode }, 
                                                                                     cancellationToken)).FirstOrDefault();
         }
 

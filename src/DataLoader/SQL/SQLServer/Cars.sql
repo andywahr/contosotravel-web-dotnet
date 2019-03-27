@@ -44,11 +44,11 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.FindCarById
 GO
 CREATE PROCEDURE dbo.FindCarById
-    @Id int
+    @IdP int
 AS
     SET NOCOUNT ON
     SELECT Id, [Location], StartingTime, EndingTime, Cost, CarType FROM CARS
-    WHERE Id = @Id
+    WHERE Id = @IdP
 GO
 
 IF EXISTS (
@@ -60,10 +60,10 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.FindCars
 GO
 CREATE PROCEDURE dbo.FindCars
-    @Location [CHAR](3),
-    @DesiredTime [DATETIMEOFFSET]
+    @LocationP [CHAR](3),
+    @DesiredTimeP [DATETIMEOFFSET]
 AS
     SET NOCOUNT ON
     SELECT Id, [Location], StartingTime, EndingTime, Cost, CarType FROM CARS
-    WHERE [Location] = @Location AND @DesiredTime between StartingTime AND EndingTime
+    WHERE [Location] = @LocationP AND @DesiredTimeP between StartingTime AND EndingTime
 GO

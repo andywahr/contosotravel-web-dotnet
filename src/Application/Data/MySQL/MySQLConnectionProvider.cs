@@ -19,6 +19,9 @@ namespace ContosoTravel.Web.Application.Data.MySQL
             SqlMapper.RemoveTypeMap(typeof(DateTimeOffset?));
 
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
+
+            MySql.Data.MySqlClient.MySqlTrace.Switch.Level = System.Diagnostics.SourceLevels.Verbose;
+
         }
 
         public async Task<IDbConnection> GetOpenConnection(CancellationToken cancellationToken)

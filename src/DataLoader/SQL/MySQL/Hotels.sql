@@ -32,26 +32,25 @@ BEGIN
                 VALUES (Id, Location, StartingTime, EndingTime, Cost, RoomType);
 END
 GO
-
 DROP PROCEDURE IF EXISTS FindHotelById
 GO
 CREATE PROCEDURE FindHotelById(
-    Id int
+    IdP int
 )
 BEGIN
     SELECT Id, Location, StartingTime, EndingTime, Cost, RoomType FROM HOTELS
-    WHERE Id = Id;
+    WHERE Id = IdP;
 END
 GO
 
 DROP PROCEDURE IF EXISTS FindHotels
 GO
 CREATE PROCEDURE FindHotels(
-    Location CHAR(3),
-    DesiredTime TIMESTAMP
+    LocationP CHAR(3),
+    DesiredTimeP TIMESTAMP
 )
 BEGIN
     SELECT Id, Location, StartingTime, EndingTime, Cost, RoomType FROM HOTELS
-    WHERE Location = Location AND DesiredTime between StartingTime AND EndingTime;
+    WHERE Location = LocationP AND DesiredTimeP between StartingTime AND EndingTime;
 END
 GO

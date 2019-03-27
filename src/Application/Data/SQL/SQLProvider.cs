@@ -70,6 +70,6 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
     public class SQLServerFindByIdParam
     {
-        public int Id { get; set; }
+        public int IdP { get; set; }
     }
 }

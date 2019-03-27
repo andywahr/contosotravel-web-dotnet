@@ -22,66 +22,66 @@ GO
 DROP PROCEDURE IF EXISTS GetCartById
 GO
 CREATE PROCEDURE GetCartById(
-    Id VARCHAR(36)
+    IdP VARCHAR(36)
 )
 BEGIN
     SELECT LOWER(Replace(id,'-', '')) as Id, DepartingFlight, ReturningFlight, CarReservation, CarReservationDuration, HotelReservation, HotelReservationDuration  FROM Carts
-    WHERE Id = Id;
+    WHERE Id = IdP;
 END
 GO
 
 DROP PROCEDURE IF EXISTS DeleteCart
 GO
 CREATE PROCEDURE DeleteCart(
-    Id VARCHAR(36)
+    IdP VARCHAR(36)
 )
 BEGIN
     DELETE FROM Carts
-    WHERE Id = Id;
+    WHERE Id = IdP;
 END
 GO
 
 DROP PROCEDURE IF EXISTS UpsertCartFlights
 GO
 CREATE PROCEDURE UpsertCartFlights(
-    Id VARCHAR(36),
-    DepartingFlight int,
-    ReturningFlight int 
+    IdP VARCHAR(36),
+    DepartingFlightP int,
+    ReturningFlightP int 
 )
 BEGIN
 	INSERT INTO CARTS (Id, DepartingFlight, ReturningFlight)  
 	VALUES 
-	   (Id, DepartingFlight, ReturningFlight)
-	ON DUPLICATE KEY UPDATE DepartingFlight = DepartingFlight, ReturningFlight = ReturningFlight;        
+	   (IdP, DepartingFlightP, ReturningFlightP)
+	ON DUPLICATE KEY UPDATE DepartingFlight = DepartingFlightP, ReturningFlight = ReturningFlightP;        
 END
 GO
 
 DROP PROCEDURE IF EXISTS UpsertCartCar
 GO
 CREATE PROCEDURE UpsertCartCar(
-    Id VARCHAR(36),
-    CarReservation int,
-    CarReservationDuration FLOAT  
+    IdP VARCHAR(36),
+    CarReservationP int,
+    CarReservationDurationP FLOAT  
 )
 BEGIN
 	INSERT INTO Carts (Id, CarReservation, CarReservationDuration)  
 	VALUES 
-	   (Id, CarReservation, CarReservationDuration)
-	ON DUPLICATE KEY UPDATE CarReservation = CarReservation, CarReservationDuration = CarReservationDuration;            
+	   (IdP, CarReservationP, CarReservationDurationP)
+	ON DUPLICATE KEY UPDATE CarReservation = CarReservationP, CarReservationDuration = CarReservationDurationP;            
 END
 GO
 
 DROP PROCEDURE IF EXISTS UpsertCartHotel
 GO
 CREATE PROCEDURE UpsertCartHotel(
-    Id VARCHAR(36),
-    HotelReservation int,
-    HotelReservationDuration int
+    IdP VARCHAR(36),
+    HotelReservationP int,
+    HotelReservationDurationP int
 )
 BEGIN
 	INSERT INTO Carts (Id, HotelReservation, HotelReservationDuration)  
 	VALUES 
-	   (Id, HotelReservation, HotelReservationDuration)
-	ON DUPLICATE KEY UPDATE HotelReservation = HotelReservation, HotelReservationDuration = HotelReservationDuration;      
+	   (IdP, HotelReservationP, HotelReservationDurationP)
+	ON DUPLICATE KEY UPDATE HotelReservation = HotelReservationP, HotelReservationDuration = HotelReservationDurationP;      
 END
 GO

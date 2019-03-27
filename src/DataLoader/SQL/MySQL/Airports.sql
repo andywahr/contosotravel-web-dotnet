@@ -39,10 +39,10 @@ GO
 DROP PROCEDURE IF EXISTS FindAirportByCode
 GO
 CREATE PROCEDURE FindAirportByCode(
-    AirportCode CHAR(3)
+    AirportCodeP CHAR(3)
 )
 BEGIN
     SELECT AirportCode, AirportName, State, CityName, TimeZone FROM Airports
-    WHERE AirportCode = AirportCode;
+    WHERE AirportCode = AirportCodeP;
 END
 GO

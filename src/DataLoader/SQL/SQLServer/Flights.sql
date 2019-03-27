@@ -48,11 +48,11 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.FindFlightById
 GO
 CREATE PROCEDURE dbo.FindFlightById
-    @Id int
+    @IdP int
 AS
     SET NOCOUNT ON
     SELECT [Id], [DepartingFrom], [ArrivingAt], [DepartureTime], [ArrivalTime], [Duration], [Cost] FROM FLIGHTS
-    WHERE Id = @Id
+    WHERE Id = @IdP
 GO
 
 IF EXISTS (
@@ -64,13 +64,13 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.FindFlights
 GO
 CREATE PROCEDURE dbo.FindFlights
-    @DepartingFrom [CHAR](3),
-    @ArrivingAt [CHAR](3),
-    @DesiredTime [DATETIMEOFFSET],
-    @SecondsOffset int
+    @DepartingFromP [CHAR](3),
+    @ArrivingAtP [CHAR](3),
+    @DesiredTimeP [DATETIMEOFFSET],
+    @SecondsOffsetP int
 AS
     SET NOCOUNT ON
     SELECT [Id], [DepartingFrom], [ArrivingAt], [DepartureTime], [ArrivalTime], [Duration], [Cost] FROM FLIGHTS
-    WHERE [DepartingFrom] = @DepartingFrom AND ArrivingAt = @ArrivingAt AND 
-    DepartureTime between DateAdd(s, -1 * @SecondsOffset, @DesiredTime) AND DateAdd(s, @SecondsOffset, @DesiredTime)
+    WHERE [DepartingFrom] = @DepartingFromP AND ArrivingAt = @ArrivingAtP AND 
+    DepartureTime between DateAdd(s, -1 * @SecondsOffsetP, @DesiredTimeP) AND DateAdd(s, @SecondsOffsetP, @DesiredTimeP)
 GO

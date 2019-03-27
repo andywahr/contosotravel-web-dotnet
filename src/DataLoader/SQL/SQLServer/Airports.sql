@@ -57,9 +57,9 @@ WHERE SPECIFIC_SCHEMA = N'dbo'
     DROP PROCEDURE dbo.FindAirportByCode
 GO
 CREATE PROCEDURE dbo.FindAirportByCode
-    @AirportCode [CHAR](3)
+    @AirportCodeP [CHAR](3)
 AS
     SET NOCOUNT ON
     SELECT AirportCode, AirportName, [State], CityName, TimeZone FROM Airports
-    WHERE AirportCode = @AirportCode
+    WHERE AirportCode = @AirportCodeP
 GO

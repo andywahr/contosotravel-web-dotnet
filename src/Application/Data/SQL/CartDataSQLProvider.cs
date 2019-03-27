@@ -20,14 +20,14 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
         private class CartIdParams
         {
-            public Guid Id { get; set; }
+            public Guid IdP { get; set; }
         }
 
         public async Task DeleteCart(string cartId, CancellationToken cancellationToken)
         {
             await _sqlServerProvider.Execute<CartIdParams>("DeleteCart", new CartIdParams()
                                                                          {
-                                                                             Id = Guid.Parse(cartId)
+                                                                             IdP = Guid.Parse(cartId)
                                                                          }, cancellationToken);
         }
 
@@ -35,23 +35,23 @@ namespace ContosoTravel.Web.Application.Data.SQL
         {
             return (await _sqlServerProvider.Query<CartIdParams, CartPersistenceModel>("GetCartById", new CartIdParams()
                                                                                                     {
-                                                                                                        Id = Guid.Parse(cartId)
+                                                                                                        IdP = Guid.Parse(cartId)
                                                                                                     }, cancellationToken)).FirstOrDefault();
         }
 
         private class UpdateCartCarParms : CartIdParams
         {
-            public int? CarReservation { get; set; }
-            public double? CarReservationDuration { get; set; }
+            public int? CarReservationP { get; set; }
+            public double? CarReservationDurationP { get; set; }
         }
 
         public async Task<CartPersistenceModel> UpsertCartCar(string cartId, int carId, double numberOfDays, CancellationToken cancellationToken)
         {
             await _sqlServerProvider.Execute<UpdateCartCarParms>("UpsertCartCar", new UpdateCartCarParms()
             {
-                Id = Guid.Parse(cartId),
-                CarReservation = _sqlServerProvider.NullIfZero(carId),
-                CarReservationDuration = _sqlServerProvider.NullIfZero(numberOfDays)
+                IdP = Guid.Parse(cartId),
+                CarReservationP = _sqlServerProvider.NullIfZero(carId),
+                CarReservationDurationP = _sqlServerProvider.NullIfZero(numberOfDays)
             }, cancellationToken);
 
             return await GetCart(cartId, cancellationToken);
@@ -59,17 +59,17 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
         private class UpsertCartFlightsParms : CartIdParams
         {
-            public int? DepartingFlight { get; set; }
-            public int? ReturningFlight { get; set; }
+            public int? DepartingFlightP { get; set; }
+            public int? ReturningFlightP { get; set; }
         }
 
         public async Task<CartPersistenceModel> UpsertCartFlights(string cartId, int departingFlightId, int returningFlightId, CancellationToken cancellationToken)
         {
             await _sqlServerProvider.Execute<UpsertCartFlightsParms>("UpsertCartFlights", new UpsertCartFlightsParms()
             {
-                Id = Guid.Parse(cartId),
-                DepartingFlight = _sqlServerProvider.NullIfZero(departingFlightId),
-                ReturningFlight = _sqlServerProvider.NullIfZero(returningFlightId),
+                IdP = Guid.Parse(cartId),
+                DepartingFlightP = _sqlServerProvider.NullIfZero(departingFlightId),
+                ReturningFlightP = _sqlServerProvider.NullIfZero(returningFlightId),
             }, cancellationToken);
 
             return await GetCart(cartId, cancellationToken);
@@ -77,17 +77,17 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
         private class UpdateCartHotelParms : CartIdParams
         {
-            public int? HotelReservation { get; set; }
-            public int? HotelReservationDuration { get; set; }
+            public int? HotelReservationP { get; set; }
+            public int? HotelReservationDurationP { get; set; }
         }
 
         public async Task<CartPersistenceModel> UpsertCartHotel(string cartId, int hotelId, int numberOfDays, CancellationToken cancellationToken)
         {
             await _sqlServerProvider.Execute<UpdateCartHotelParms>("UpsertCartHotel", new UpdateCartHotelParms()
             {
-                Id = Guid.Parse(cartId),
-                HotelReservation = _sqlServerProvider.NullIfZero(hotelId),
-                HotelReservationDuration = _sqlServerProvider.NullIfZero(numberOfDays)
+                IdP = Guid.Parse(cartId),
+                HotelReservationP = _sqlServerProvider.NullIfZero(hotelId),
+                HotelReservationDurationP = _sqlServerProvider.NullIfZero(numberOfDays)
             }, cancellationToken);
 
             return await GetCart(cartId, cancellationToken);
