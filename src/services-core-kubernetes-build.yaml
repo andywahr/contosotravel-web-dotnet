@@ -69,5 +69,5 @@ jobs:
     inputs:
       azureSubscription: '${{ variables.ConnectedServiceName_local }}'
       scriptPath: /tmp/arkhitekton-modules/Terraform/ContosoTravel/Kubernetes/configure.bash
-      arguments: 'rg-${{ variables.NamePrefix_local }} ${{ variables.SubscriptionId_local }} ${{ variables.NamePrefix_local }} /tmp/arkhitekton-modules/Terraform/ContosoTravel/backend/kubernetes/webdeploy.yaml -includeNginx'
+      arguments: 'rg-${{ variables.NamePrefix_local }} ${{ variables.SubscriptionId_local }} ${{ variables.NamePrefix_local }} /tmp/arkhitekton-modules/Terraform/ContosoTravel/backend/kubernetes/webdeploy.yaml'
       workingDirectory: $(Build.sourcesDirectory)
