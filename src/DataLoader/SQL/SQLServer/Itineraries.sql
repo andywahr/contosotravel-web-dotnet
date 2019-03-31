@@ -74,11 +74,11 @@ CREATE PROCEDURE dbo.UpsertItinerary
 AS
     SET NOCOUNT ON
     MERGE Itineraries AS target  
-    USING (SELECT @IdP, @DepartingFlightP, @ReturningFlightP, @CarReservationP, @CarReservationDurationP, @HotelReservationP, @HotelReservationDurationP, @RecordLocatorP) AS source ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator])  
+    USING (SELECT @IdP, @DepartingFlightP, @ReturningFlightP, @CarReservationP, @CarReservationDurationP, @HotelReservationP, @HotelReservationDurationP, @PurchasedOnP, @RecordLocatorP) AS source ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [PurchasedOn], [RecordLocator])  
     ON (target.Id = source.Id)  
     WHEN MATCHED THEN   
-        UPDATE SET [Id] = source.[Id], [DepartingFlight] = source.[DepartingFlight], [ReturningFlight] = source.[ReturningFlight], [CarReservation] = source.[CarReservation], [CarReservationDuration] = source.[CarReservationDuration], [HotelReservation] = source.[HotelReservation], [HotelReservationDuration] = source.[HotelReservationDuration], [RecordLocator] = source.[RecordLocator]
+        UPDATE SET [Id] = source.[Id], [DepartingFlight] = source.[DepartingFlight], [ReturningFlight] = source.[ReturningFlight], [CarReservation] = source.[CarReservation], [CarReservationDuration] = source.[CarReservationDuration], [HotelReservation] = source.[HotelReservation], [HotelReservationDuration] = source.[HotelReservationDuration], [PurchasedOn] = source.[PurchasedOn], [RecordLocator] = source.[RecordLocator]
     WHEN NOT MATCHED THEN  
-        INSERT ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [RecordLocator])
-        VALUES (source.[Id], source.[DepartingFlight], source.[ReturningFlight], source.[CarReservation], source.[CarReservationDuration], source.[HotelReservation], source.[HotelReservationDuration], source.[RecordLocator]);
+        INSERT ([Id], [DepartingFlight], [ReturningFlight], [CarReservation], [CarReservationDuration], [HotelReservation], [HotelReservationDuration], [PurchasedOn], [RecordLocator])
+        VALUES (source.[Id], source.[DepartingFlight], source.[ReturningFlight], source.[CarReservation], source.[CarReservationDuration], source.[HotelReservation], source.[HotelReservationDuration], source.[PurchasedOn], source.[RecordLocator]);
 GO
