@@ -89,6 +89,7 @@ Global
 		{C9858D1F-69A8-4037-BF1F-C1FCE576FDE1}.ServicesCoreEventGrid|Any CPU.ActiveCfg = Release|Any CPU
 		{C9858D1F-69A8-4037-BF1F-C1FCE576FDE1}.ServicesCoreEventGrid|Any CPU.Build.0 = Release|Any CPU
 		{C9858D1F-69A8-4037-BF1F-C1FCE576FDE1}.ServicesCoreServiceBus|Any CPU.ActiveCfg = Release|Any CPU
+		{C9858D1F-69A8-4037-BF1F-C1FCE576FDE1}.ServicesCoreServiceBus|Any CPU.Build.0 = Release|Any CPU
 		{C9858D1F-69A8-4037-BF1F-C1FCE576FDE1}.WebCore|Any CPU.ActiveCfg = Release|Any CPU
 		{C9858D1F-69A8-4037-BF1F-C1FCE576FDE1}.WebFull|Any CPU.ActiveCfg = Release|Any CPU
 		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.DataLoaders|Any CPU.ActiveCfg = Release|Any CPU
@@ -97,6 +98,7 @@ Global
 		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.ServicesCoreEventGrid|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.ServicesCoreEventGrid|Any CPU.Build.0 = Release|Any CPU
 		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.ServicesCoreServiceBus|Any CPU.ActiveCfg = Release|Any CPU
 		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.ServicesCoreServiceBus|Any CPU.Build.0 = Release|Any CPU
 		{DFA8ABA2-2459-4D7B-9C3A-C580A482F69C}.WebCore|Any CPU.ActiveCfg = Release|Any CPU

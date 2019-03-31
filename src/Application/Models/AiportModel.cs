@@ -6,7 +6,20 @@ namespace ContosoTravel.Web.Application.Models
 {
     public class AirportModel
     {
+
         [JsonProperty(PropertyName = "id")]
+        public string Id
+        {
+            get
+            {
+                return AirportCode;
+            }
+            set
+            {
+                AirportCode = value;
+            }
+        }
+
         public string AirportCode { get; set; }
         public string AirportName { get; set; }
         public string CityName { get; set; }
