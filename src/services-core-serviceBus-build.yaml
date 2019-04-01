@@ -1,12 +1,6 @@
 # a build with no CI
 trigger: none
 
-variables:
-  BuildConfiguration: ServicesCoreServiceBus
-  BuildPlatform: Any CPU
-  BuildType: App
-  ConnectedServiceName_local: $(ConnectedServiceName)
-
 jobs:
 - job: NetCore_ServiceBus_Function_Build_and_Deploy
   pool:
@@ -15,7 +9,43 @@ jobs:
     - msbuild
     - visualstudio
     - vstest
+
+  variables:
+    ConnectedServiceName_local: $(ConnectedServiceName)
+    WebAppType_local: $(WebAppType)
+    WebAppName_local: $(WebAppName)
+
   steps:
-  - template: ./build.yaml
-    parameters:
-      ConnectedServiceName: $(ConnectedServiceName_local)
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: 'src/ContosoTravel.Web.Functions.ServiceBus/Functions.ServiceBus.csproj'
+      workingDirectory: 'src/'
+  
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: 'src/ContosoTravel.Web.Functions.ServiceBus/Functions.ServiceBus.csproj'
+      arguments: '--configuration Release'
+      workingDirectory: 'src/'
+  
+  - task: DotNetCoreCLI@2
+    displayName: Publish
+    inputs:
+      command: publish
+      publishWebProjects: false
+      arguments: 'ContosoTravel.Web.Functions.ServiceBus/Functions.ServiceBus.csproj --configuration Release --output $(build.artifactstagingdirectory)'
+      zipAfterPublish: True
+      workingDirectory: 'src/'
+  
+  - task: AzureRmWebAppDeployment@3
+    displayName: 'Azure App Service Deploy: ${{ variables.WebAppType_local }} - ${{ variables.WebAppName_local }}'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
+      appType: '$(WebAppType_local)'
+      WebAppName: '$(WebAppName_local)'
+      Package: '$(build.artifactstagingdirectory)/**/*.zip'
+      TakeAppOfflineFlag: true
+      UseWebDeploy: true
+      RemoveAdditionalFilesFlag: true

@@ -26,7 +26,7 @@ namespace DataLoader.SQL
             {
                 await connection.OpenAsync(cancellationToken);
                 Server server = new Server(new ServerConnection(connection));
-                server.ConnectionContext.ExecuteNonQuery($"CREATE LOGIN {_contosoConfiguration.DataAccountUserName} WITH PASSWORD = '{_contosoConfiguration.DataAccountPassword}';\nGO\nCREATE USER {_contosoConfiguration.DataAccountUserName} FROM LOGIN {_contosoConfiguration.DataAccountUserName};\nGO");
+                server.ConnectionContext.ExecuteNonQuery($"IF EXISTS (SELECT * FROM master.dbo.syslogins WHERE name = N'{_contosoConfiguration.DataAccountUserName}')\nBEGIN\nCREATE LOGIN {_contosoConfiguration.DataAccountUserName} WITH PASSWORD = '{_contosoConfiguration.DataAccountPassword}';\nEND\nGO");
             }
 
             using (SqlConnection connection = new SqlConnection($"Server={_contosoConfiguration.DataAccountName}.database.windows.net;Database={_contosoConfiguration.DatabaseName};User Id={_contosoConfiguration.DataAdministratorLogin};Password={_contosoConfiguration.DataAdministratorLoginPassword};"))
@@ -34,7 +34,7 @@ namespace DataLoader.SQL
                 await connection.OpenAsync(cancellationToken);
                 Server server = new Server(new ServerConnection(connection));
 
-                server.ConnectionContext.ExecuteNonQuery($"CREATE USER {_contosoConfiguration.DataAccountUserName} FROM LOGIN {_contosoConfiguration.DataAccountUserName};\nGO\nGRANT EXECUTE TO {_contosoConfiguration.DataAccountUserName};\nGO");
+                server.ConnectionContext.ExecuteNonQuery($"IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{_contosoConfiguration.DataAccountUserName}')\nBEGIN\nCREATE USER {_contosoConfiguration.DataAccountUserName} FROM LOGIN {_contosoConfiguration.DataAccountUserName};\nGRANT EXECUTE TO {_contosoConfiguration.DataAccountUserName};\nEND\nGO");
                 server.ConnectionContext.ExecuteNonQuery(ReadResource("Airports.sql"));
                 server.ConnectionContext.ExecuteNonQuery(ReadResource("Cars.sql"));
                 server.ConnectionContext.ExecuteNonQuery(ReadResource("Flights.sql"));
