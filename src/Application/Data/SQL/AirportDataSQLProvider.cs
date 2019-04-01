@@ -37,7 +37,7 @@ namespace ContosoTravel.Web.Application.Data.SQL
 
         public async Task<bool> Persist(AirportModel instance, CancellationToken cancellationToken)
         {
-            await _sqlServerProvider.Execute<AirportModel>("CreateAirport", instance, cancellationToken);
+            await _sqlServerProvider.Execute<BasicAirportModel>("CreateAirport", new BasicAirportModel(instance), cancellationToken);
             return true;
         }
     }
