@@ -1,4 +1,5 @@
 ﻿using ContosoTravel.Web.Application.Data.Mock;
+using Dapper.Contrib.Extensions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -7,6 +8,7 @@ namespace ContosoTravel.Web.Application.Models
     public class AirportModel
     {
 
+        [Write(false)]
         [JsonProperty(PropertyName = "id")]
         public string Id
         {
