@@ -26,7 +26,7 @@ namespace DataLoader.SQL
             {
                 await connection.OpenAsync(cancellationToken);
                 Server server = new Server(new ServerConnection(connection));
-                server.ConnectionContext.ExecuteNonQuery($"IF EXISTS (SELECT * FROM sys.sql_logins WHERE name = N'{_contosoConfiguration.DataAccountUserName}')\nBEGIN\nCREATE LOGIN {_contosoConfiguration.DataAccountUserName} WITH PASSWORD = '{_contosoConfiguration.DataAccountPassword}';\nEND\nGO");
+                server.ConnectionContext.ExecuteNonQuery($"IF NOT EXISTS (SELECT * FROM sys.sql_logins WHERE name = N'{_contosoConfiguration.DataAccountUserName}')\nBEGIN\nCREATE LOGIN {_contosoConfiguration.DataAccountUserName} WITH PASSWORD = '{_contosoConfiguration.DataAccountPassword}';\nEND\nGO");
             }
 
             using (SqlConnection connection = new SqlConnection($"Server={_contosoConfiguration.DataAccountName}.database.windows.net;Database={_contosoConfiguration.DatabaseName};User Id={_contosoConfiguration.DataAdministratorLogin};Password={_contosoConfiguration.DataAdministratorLoginPassword};"))
