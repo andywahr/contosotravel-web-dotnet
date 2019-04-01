@@ -35,6 +35,7 @@ namespace DataLoader.SQL
                 Server server = new Server(new ServerConnection(connection));
 
                 server.ConnectionContext.ExecuteNonQuery($"IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'{_contosoConfiguration.DataAccountUserName}')\nBEGIN\nCREATE USER {_contosoConfiguration.DataAccountUserName} FROM LOGIN {_contosoConfiguration.DataAccountUserName};\nGRANT EXECUTE TO {_contosoConfiguration.DataAccountUserName};\nEND\nGO");
+                server.ConnectionContext.ExecuteNonQuery(ReadResource("ClearDb.sql"));
                 server.ConnectionContext.ExecuteNonQuery(ReadResource("Airports.sql"));
                 server.ConnectionContext.ExecuteNonQuery(ReadResource("Cars.sql"));
                 server.ConnectionContext.ExecuteNonQuery(ReadResource("Flights.sql"));
