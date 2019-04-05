@@ -27,8 +27,8 @@ namespace ContosoTravel.Web.Application.Services.Http
         {
             PurchaseItineraryMessage purchaseItineraryMessage = new PurchaseItineraryMessage() { CartId = cartId, PurchasedOn = PurchasedOn };
 
-            var httpResponse = await _httpClient.PostAsync(_pathAndQuery, new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(purchaseItineraryMessage)));
-
+            var httpResponse = await _httpClient.PostAsync(_pathAndQuery, new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(purchaseItineraryMessage), System.Text.Encoding.Default, "application/json"), cancellationToken);
+             
             httpResponse.EnsureSuccessStatusCode();
 
             return true;
