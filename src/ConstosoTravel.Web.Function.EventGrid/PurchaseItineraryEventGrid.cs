@@ -26,7 +26,7 @@ namespace ContosoTravel.Web.Function.EventGrid
             _thisAssembly = typeof(PurchaseItineraryEventGrid).Assembly;
         }
 
-        [FunctionName("PurchaseItineraryEventGrid")]
+        [FunctionName("PurchaseItinerary")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]PurchaseItineraryMessage req, ILogger log, CancellationToken cancellationToken, ExecutionContext context)
         {
             log.LogInformation($"Starting to finalize purchase of {req.CartId}");
