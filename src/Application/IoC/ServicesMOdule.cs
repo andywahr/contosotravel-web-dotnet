@@ -3,6 +3,7 @@ using ContosoTravel.Web.Application.Interfaces;
 using ContosoTravel.Web.Application.Interfaces.MVC;
 using ContosoTravel.Web.Application.Services;
 using ContosoTravel.Web.Application.Services.EventGrid;
+using ContosoTravel.Web.Application.Services.Http;
 using ContosoTravel.Web.Application.Services.Monolith;
 using ContosoTravel.Web.Application.Services.ServiceBus;
 
@@ -30,6 +31,11 @@ namespace ContosoTravel.Web.Application.IoC
                     break;
                 case ServicesType.ServiceBus:
                     builder.RegisterType<PurchaseServiceBusService>()
+                           .As<IPurchaseService>()
+                           .SingleInstance();
+                    break;
+                case ServicesType.Http:
+                    builder.RegisterType<PurchaseHttpService>()
                            .As<IPurchaseService>()
                            .SingleInstance();
                     break;
