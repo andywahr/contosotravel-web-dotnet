@@ -1,0 +1,25 @@
+# a build with no CI
+trigger: none
+
+jobs:
+- job: Publish_DataLoader
+  pool:
+    name: Hosted Ubuntu 1604
+  steps:
+  - task: Docker@0
+    displayName: 'Build dataloader Container'
+    inputs:
+      dockerFile: src/DataLoadersDockerfile
+      imageName: 'andywahr/contosotravel-dataloader:latest'
+      qualifyImageName: false
+      workingDirectory: src
+  
+  - task: Docker@0
+    displayName: 'Push dataloader to DockerHub'
+    inputs:
+      containerregistrytype: 'Container Registry'
+      dockerRegistryConnection: DockerHub
+      action: 'Push an image'
+      imageName: 'andywahr/contosotravel-dataloader:latest'
+      qualifyImageName: false
+  
