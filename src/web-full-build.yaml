@@ -6,6 +6,8 @@ variables:
   BuildPlatform: Any CPU
   BuildType: App
   ConnectedServiceName_local: $(ConnectedServiceName)
+  WebAppType_local: $(WebAppType)
+  WebAppName_local: $(WebAppName)
 
 jobs:
 - job: NetFramework_Web_Build_and_Deploy
@@ -16,6 +18,31 @@ jobs:
     - visualstudio
     - vstest
   steps:
-  - template: ./build.yaml
-    parameters:
-      ConnectedServiceName: $(ConnectedServiceName_local)
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet 4.9.3'
+    inputs:
+      versionSpec: 4.9.3
+  
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '**\*.sln'
+  
+  - task: VSBuild@1
+    displayName: 'Build solution **\*.sln'
+    inputs:
+      msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'  
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+  
+  - task: AzureRmWebAppDeployment@3
+    displayName: 'Azure App Service Deploy: $(WebAppType) - $(WebAppName)'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'  
+      appType: '$(WebAppType_local)'  
+      WebAppName: '$(WebAppName_local)'  
+      Package: '$(build.artifactstagingdirectory)/**/*.zip'  
+      TakeAppOfflineFlag: true  
+      UseWebDeploy: true  
+      RemoveAdditionalFilesFlag: true
+ 
