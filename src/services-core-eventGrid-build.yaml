@@ -2,7 +2,7 @@
 trigger: none
 
 jobs:
-- job: NetCore_EventGrid_Function_Build_and_Deploy
+- job: NetCore_EventGrid_HTTP_Function_Build_and_Deploy
   pool:
     name: Hosted VS2017
     demands: 
@@ -14,6 +14,7 @@ jobs:
     ConnectedServiceName_local: $(ConnectedServiceName)
     WebAppType_local: $(WebAppType)
     WebAppName_local: $(WebAppName)
+    namePrefix_local: $(namePrefix)
 
   steps:
   - task: DotNetCoreCLI@2
@@ -49,3 +50,12 @@ jobs:
       TakeAppOfflineFlag: true
       UseWebDeploy: true
       RemoveAdditionalFilesFlag: true
+
+  - task: AzureCLI@1
+    displayName: 'Azure CLI - Running configuration.ps1 and Deploy'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
+      scriptLocation: inlineScript
+      inlineScript: powershell .\src\configEventGrid.ps1 ${{ variables.namePrefix_local }}
+      workingDirectory: $(Build.sourcesDirectory)      
+    condition: and(always(), eq(variables['eventing'], 'eventgrid'))

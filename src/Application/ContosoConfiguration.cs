@@ -39,6 +39,7 @@ namespace ContosoTravel.Web.Application
         public string DataAdministratorLoginPassword { get; set; }
         public string DataAccountPassword { get; set; }
         public string DataAccountUserName { get; set; }
+        public string ServiceFQDN { get; set; }
 
     }
 
@@ -46,7 +47,8 @@ namespace ContosoTravel.Web.Application
     {
         Monolith,
         ServiceBus,
-        EventGrid
+        EventGrid,
+        Http
     }
 
     public enum DataType

@@ -31,7 +31,7 @@ namespace ContosoTravel.Web.Host.Service.Controllers
         {
             Microsoft.Azure.WebJobs.ExecutionContext context = new Microsoft.Azure.WebJobs.ExecutionContext();
             context.FunctionAppDirectory = _hostingEnvironment.ContentRootPath;
-            return await PurchaseItineraryEventGrid.Run(purchseItnierary, _logger, cancellationToken, context);
+            return await PurchaseItineraryEventGrid.RunWithMessage(purchseItnierary, _logger, cancellationToken, context);
         }
     }
 }
