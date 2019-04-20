@@ -16,13 +16,16 @@ namespace ContosoTravel.Web.Application.Data.CosmosSQL
     {
         private DocumentClient _client;
         private ContosoConfiguration _contosoConfig;
+        private Collection<Index> _indexes;
 
         public CosmosDBProvider(ContosoConfiguration contosoConfig, AzureManagement azureManagement)
         {
             _contosoConfig = contosoConfig;
 
             _client = new DocumentClient(new Uri($"https://{contosoConfig.DataAccountName}.documents.azure.com"), contosoConfig.DataAccountPassword, new ConnectionPolicy() { RetryOptions = new RetryOptions() { MaxRetryAttemptsOnThrottledRequests = 20 } });
-
+            _indexes = new Collection<Index>();
+            _indexes.Add(new RangeIndex(Microsoft.Azure.Documents.DataType.String, -1));
+            _indexes.Add(new RangeIndex(Microsoft.Azure.Documents.DataType.Number, -1));
         }
 
         public DocumentClient GetDocumentClient()
@@ -32,14 +35,29 @@ namespace ContosoTravel.Web.Application.Data.CosmosSQL
 
         public async Task<DocumentClient> GetDocumentClientAndVerifyCollection(string collection, params string[] indexes)
         {
-            // leave indexes for later
+            IndexingPolicy indexingPolicy = new IndexingPolicy();
+            indexingPolicy.ExcludedPaths.Add(new ExcludedPath() { Path = "/*" });
+
+            if (indexes != null && indexes.Any())
+            {
+                foreach (var index in indexes)
+                {
+                    indexingPolicy.IncludedPaths.Add(new IncludedPath()
+                    {
+                        Path = index,
+                        Indexes = _indexes
+                    });
+                }
+            }
 
             await _client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_contosoConfig.DatabaseName),
                                                                      new DocumentCollection
                                                                      {
-                                                                         Id = collection
+                                                                         Id = collection,
+                                                                         IndexingPolicy = indexingPolicy
                                                                      },
-                                                                     new RequestOptions { OfferThroughput = 400 });
+                                                                     new RequestOptions { OfferThroughput = 400 }
+                                                                     ); 
             return _client;
         }
 
