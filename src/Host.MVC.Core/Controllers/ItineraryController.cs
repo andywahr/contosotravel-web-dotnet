@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
     [Route("[controller]")]
+    [ResponseCache(CacheProfileName = "NoCache")]
     public class ItineraryController : Controller
     {
         private readonly IItineraryController _itineraryController;

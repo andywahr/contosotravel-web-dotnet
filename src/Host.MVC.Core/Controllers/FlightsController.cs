@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
     [Route("[controller]")]
+    [ResponseCache(CacheProfileName = "NoCache")]
     public class FlightsController : Controller
     {
         private readonly IFlightsController _flightsController;

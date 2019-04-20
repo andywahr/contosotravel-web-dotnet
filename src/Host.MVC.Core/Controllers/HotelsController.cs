@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
     [Route("[controller]")]
+    [ResponseCache(CacheProfileName = "NoCache")]
     public class HotelsController : Controller
     {
         private readonly IHotelsController _hotelController;

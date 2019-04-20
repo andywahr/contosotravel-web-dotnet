@@ -37,7 +37,15 @@ namespace ContosoTravel.Web.Host.MVC.Core
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+            {
+                options.CacheProfiles.Add("NoCache",
+                    new CacheProfile()
+                    {
+                        Duration = 0,
+                        NoStore = true
+                    });
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddHttpContextAccessor();
             services.AddLogging();
         }

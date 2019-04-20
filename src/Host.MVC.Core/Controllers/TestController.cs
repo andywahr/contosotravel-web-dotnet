@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ContosoTravel.Web.Host.MVC.Core.Controllers
 {
     [Route("[controller]")]
+    [ResponseCache(CacheProfileName = "NoCache")]
     public class TestController : Controller
     {
         private readonly IAirportDataProvider _airportDataProvider;
