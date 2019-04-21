@@ -16,7 +16,7 @@ namespace ContosoTravel.Web.Application.Controllers.MVC
         private readonly ICartDataProvider _cartDataProvider;
         private readonly IAirportDataProvider _airportDataProvider;
         private readonly ICartCookieProvider _cartCookieProvider;
-        private static TimeSpan THREEHOURSBEFOREORAFTER = TimeSpan.FromHours(3);
+        private static TimeSpan SIXHOURSBEFOREORAFTER = TimeSpan.FromHours(6);
 
         public FlightsController(IFlightDataProvider flightDataProvider, ICartDataProvider cartDataProvider, IAirportDataProvider airportDataProvider, ICartCookieProvider cartCookieProvider)
         {
@@ -42,15 +42,15 @@ namespace ContosoTravel.Web.Application.Controllers.MVC
         public async Task<FlightReservationModel> Search(SearchModel searchRequest, CancellationToken cancellationToken)
         {
             FlightReservationModel roundTrip = new FlightReservationModel();
-            roundTrip.DepartingFlights = await _flightDataProvider.FindFlights(searchRequest.StartLocation, searchRequest.EndLocation, searchRequest.StartDate, THREEHOURSBEFOREORAFTER, cancellationToken);
-            roundTrip.ReturningFlights = await _flightDataProvider.FindFlights(searchRequest.EndLocation, searchRequest.StartLocation, searchRequest.EndDate, THREEHOURSBEFOREORAFTER, cancellationToken);
+            roundTrip.DepartingFlights = await _flightDataProvider.FindFlights(searchRequest.StartLocation, searchRequest.EndLocation, searchRequest.StartDate, SIXHOURSBEFOREORAFTER, cancellationToken);
+            roundTrip.ReturningFlights = await _flightDataProvider.FindFlights(searchRequest.EndLocation, searchRequest.StartLocation, searchRequest.EndDate, SIXHOURSBEFOREORAFTER, cancellationToken);
 
-            if (searchRequest.IsTest)
+            if (searchRequest.IsTest && roundTrip.DepartingFlights.Any())
             {
                 roundTrip.SelectedDepartingFlight = roundTrip.DepartingFlights.Skip(TestSettings.random.Next(roundTrip.DepartingFlights.Count() - 1)).First().Id;
             }
 
-            if (searchRequest.IsTest)
+            if (searchRequest.IsTest && roundTrip.ReturningFlights.Any())
             {
                 roundTrip.SelectedReturningFlight = roundTrip.ReturningFlights.Skip(TestSettings.random.Next(roundTrip.ReturningFlights.Count() - 1)).First().Id;
             }
