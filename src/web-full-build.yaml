@@ -12,7 +12,7 @@ variables:
 jobs:
 - job: NetFramework_Web_Build_and_Deploy
   pool:
-    name: 'windows-2019'
+    vmImage: 'windows-2019'
     demands: 
     - msbuild
     - visualstudio
