@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYamls", "BuildYamls", "{85EE7552-5DA9-4105-919D-31A3258CA2D5}"
 	ProjectSection(SolutionItems) = preProject
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
 		build.yaml = build.yaml
 		configEventGrid.ps1 = configEventGrid.ps1
 		DataLoadersDockerfile = DataLoadersDockerfile
