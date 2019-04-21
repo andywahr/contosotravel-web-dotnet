@@ -35,7 +35,7 @@ namespace ContosoTravel.Web.Application.Data.CosmosSQL
 
         public async Task<DocumentClient> GetDocumentClientAndVerifyCollection(string collection, params string[] indexes)
         {
-            IndexingPolicy indexingPolicy = new IndexingPolicy();
+            IndexingPolicy indexingPolicy = new IndexingPolicy() { Automatic = false };
             indexingPolicy.ExcludedPaths.Add(new ExcludedPath() { Path = "/*" });
 
             if (indexes != null && indexes.Any())
