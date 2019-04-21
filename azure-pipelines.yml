@@ -6,9 +6,6 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'Hosted Windows 2019 with VS2019'
-
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
