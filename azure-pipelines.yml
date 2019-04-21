@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'VS2017-Win2016'
+  vmImage: 'Hosted Windows 2019 with VS2019'
 
 variables:
   solution: '**/*.sln'
@@ -17,13 +17,7 @@ variables:
 steps:
 - task: NuGetToolInstaller@0
   inputs:
-    versionSpec: 4.9.3
-
-- task: NuGetCommand@2
-  inputs:
-    command: custom
-    arguments: install src\Host.MVC.FullFramework\packages.config -OutputDirectory src\packages
-
+    versionSpec: 5.0.0
 
 - task: NuGetCommand@2
   inputs:
@@ -32,7 +26,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    msbuildArgs: '/p:SkipInvalidConfigurations=true'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
