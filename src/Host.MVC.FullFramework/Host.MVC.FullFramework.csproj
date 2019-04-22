@@ -632,8 +632,8 @@
       <ExtraDlls Include="..\packages\Microsoft.ApplicationInsights.WindowsServer.2.9.1\lib\net45\**\*" />
       <ExtraDlls Include="..\packages\Microsoft.ApplicationInsights.2.9.1\lib\net46\**\*" />
       <ExtraDlls Include="..\packages\Nito.AsyncEx.Tasks.5.0.0\lib\netstandard2.0\**\*" />
-      <ExtraDlls Include="..\packages\Nito.AsyncEx.Coordination.1.0.2\lib\**\*" />
-      <ExtraDlls Include="..\packages\Nito.AsyncEx.Tasks.5.0.0\lib\netstandard2.0\**\*" />
+      <ExtraDlls Include="..\packages\Nito.AsyncEx.Coordination.5.0.0\lib\netstandard2.0\**\*" />
+      <ExtraDlls Include="..\packages\Nito.AsyncEx.Context.5.0.0\lib\netstandard2.0\**\*" />
       <ExtraDlls Include="..\packages\System.Diagnostics.DiagnosticSource.4.5.1\lib\net46\**\*" />
     </ItemGroup>
     <Copy SourceFiles="@(ExtraDlls)" DestinationFiles="@(ExtraDlls->'$(_PackageTempDir)\bin\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
