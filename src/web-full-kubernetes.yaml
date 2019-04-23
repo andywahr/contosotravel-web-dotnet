@@ -1,0 +1,93 @@
+# a build with no CI
+trigger: none
+
+variables:
+  BuildConfiguration: WebFull
+  BuildPlatform: Any CPU
+  BuildType: App
+  ConnectedServiceName_local: $(ConnectedServiceName)
+  WebAppType_local: $(WebAppType)
+  WebAppName_local: $(WebAppName)
+
+jobs:
+- job: NetFramework_Web_Build_and_Deploy
+  pool:
+    vmImage: 'windows-2019'
+    demands: 
+    - msbuild
+    - visualstudio
+    - vstest
+  steps:
+  - task: NuGetToolInstaller@0
+    displayName: 'Use NuGet 4.9.3'
+    inputs:
+      versionSpec: 4.9.3
+  
+  - task: NuGetCommand@2
+    displayName: 'NuGet restore'
+    inputs:
+      restoreSolution: '**\*.sln'
+  
+  - task: VSBuild@1
+    displayName: 'Build solution **\*.sln'
+    inputs:
+      msbuildArgs: '/p:DeployOnBuild=true /p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(build.artifactstagingdirectory)\\website"'  
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+  
+  - task: Docker@0
+    displayName: 'Build a container image'
+    inputs:
+      imageName: 'acrcontosotravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-travel-web:$(Build.BuildId)'
+      includeLatestTag: true
+      dockerFile: src/HostFullDockerfile
+      workingDirectory: '$(build.artifactstagingdirectory)/website'
+  
+  - task: Docker@0
+    displayName: 'Push a container image'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
+      azureContainerRegistry: '{"loginServer":"acrcontosotravel${{ variables.NamePrefix_local }}.azurecr.io", "id":"/subscriptions/${{ variables.SubscriptionId_local }}/resourceGroups/rg-${{ variables.NamePrefix_local }}/providers/Microsoft.ContainerRegistry/registries/acrContosoTravel${{ variables.NamePrefix_local }}"}'
+      action: 'Push an image'
+      includeLatestTag: true
+      imageName: 'acrcontosotravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-travel-web:$(Build.BuildId)'
+      workingDirectory: '$(build.sourcesDirectory)/src'
+  
+  - task: AzureCLI@1
+    displayName: 'Azure CLI - Set Variables for Kubernetes'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
+      scriptLocation: inlineScript
+      inlineScript: |
+        appInsightsKey=$(az resource show --resource-group $ResourceGroupName --subscription $SubscriptionId_local --resource-type Microsoft.Insights/components --name $AppInsightsName --query "properties.InstrumentationKey"  --out tsv )
+        dnsZone=$(az aks show --resource-group $ResourceGroupName  --subscription $SubscriptionId_local --name $AKSName --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName  --out tsv )
+        echo "##vso[task.setvariable variable=appInsightsKey;isOutput=true]$appInsightsKey"
+        echo "##vso[task.setvariable variable=dnsZone;isOutput=true]$dnsZone"
+    env:
+      NamePrefix_local: $(NamePrefix_local)
+      SubscriptionId_local: $(SubscriptionId_local)
+      ResourceGroupName: rg-${{ variables.NamePrefix_local }}
+      AppInsightsName: ${{ variables.NamePrefix_local }}appInsightContosoTravel
+      AKSName: aks-ContosoTravel-${{ variables.NamePrefix_local }}
+    name: 'azureValues'
+
+  - task: replacetokens@3
+    displayName: 'Replace tokens in webDeploy.yaml'
+    inputs:
+      targetFiles: src/webDeploy.yaml
+  
+  - task: AzureCLI@1
+    displayName: 'Azure CLI - Deploy Web to Kubernetes'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
+      scriptLocation: inlineScript
+      inlineScript: |
+         az aks get-credentials --subscription $SubscriptionId_local --resource-group $ResourceGroupName --name $AKSName --overwrite-existing
+         kubectl apply -f src/webDeploy.yaml
+         kubectl set image deployments/contosotravel-web $ImageExpr
+    env:
+      NamePrefix_local: $(NamePrefix_local)
+      SubscriptionId_local: $(SubscriptionId_local)
+      ResourceGroupName: rg-${{ variables.NamePrefix_local }}
+      AKSName: aks-ContosoTravel-${{ variables.NamePrefix_local }}
+      ImageExpr: contosotravel-web=acrContosoTravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-web:$(Build.BuildId)

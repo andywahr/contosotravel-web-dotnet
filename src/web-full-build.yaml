@@ -26,14 +26,15 @@ jobs:
   - task: NuGetCommand@2
     displayName: 'NuGet restore'
     inputs:
-      restoreSolution: '**\*.sln'
+      restoreSolution: 'src\ContosoTravel.Web.FullFramework.sln'
   
   - task: VSBuild@1
-    displayName: 'Build solution **\*.sln'
+    displayName: 'Build solution ContosoTravel.Web.FullFramework.sln'
     inputs:
       msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'  
       platform: '$(BuildPlatform)'
       configuration: '$(BuildConfiguration)'
+      solution: src\ContosoTravel.Web.FullFramework.sln
   
   - task: AzureRmWebAppDeployment@3
     displayName: 'Azure App Service Deploy: $(WebAppType) - $(WebAppName)'
