@@ -51,28 +51,51 @@ jobs:
       azureSubscription: '${{ variables.ConnectedServiceName_local }}'
       scriptLocation: inlineScript
       inlineScript: |
-        "Get Info From Resource Group - appInsightsKey"
-        $appInsightsKey = az resource show --resource-group rg-${{ variables.NamePrefix_local }} --subscription ${{ variables.SubscriptionId_local }} --resource-type Microsoft.Insights/components --name ${{ variables.NamePrefix_local }}appInsightContosoTravel --query "properties.InstrumentationKey"
-        "Get Info From Resource Group - dnsZone"
-        $dnsZone = (az aks show --resource-group rg-${{ variables.NamePrefix_local }} --subscription ${{ variables.SubscriptionId_local }} --name aks-ContosoTravel-${{ variables.NamePrefix_local }} --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName).Replace('"', '')
-        "Get Info serviceConnStr Resource Group - dnsZone"
-        $serviceConnStr = ((az keyvault secret show --subscription ${{ variables.SubscriptionId_local }} --vault-name "kv${{ variables.NamePrefix_local }}" --name "ContosoTravel--EventingConnectionString" --query value).Replace('"', '')) -replace ";EntityPath.+", ""
+        appInsightsKey=$(az resource show --resource-group $ResourceGroupName --subscription $SubscriptionId_local --resource-type Microsoft.Insights/components --name $AppInsightsName --query "properties.InstrumentationKey"  --out tsv )
+        dnsZone=$(az aks show --resource-group $ResourceGroupName  --subscription $SubscriptionId_local --name $AKSName --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName  --out tsv )
+        serviceConnStr=$(az keyvault secret show --subscription $SubscriptionId_local --vault-name $KVName --name "ContosoTravel--EventingConnectionString" --query value --out tsv | sed -e 's/;EntityPath.+//' )
         echo "##vso[task.setvariable variable=appInsightsKey;isOutput=true]$appInsightsKey"
         echo "##vso[task.setvariable variable=dnsZone;isOutput=true]$dnsZone"
-        echo "##vso[task.setvariable variable=serviceConnStr;isOutput=true]$serviceConnStr"
+        echo "##vso[task.setvariable variable=serviceConnectionString;isOutput=true]$serviceConnStr"
+    env:
+      NamePrefix_local: $(NamePrefix_local)
+      SubscriptionId_local: $(SubscriptionId_local)
+      ResourceGroupName: rg-${{ variables.NamePrefix_local }}
+      AppInsightsName: ${{ variables.NamePrefix_local }}appInsightContosoTravel
+      AKSName: aks-ContosoTravel-${{ variables.NamePrefix_local }}
+      KVName: kv${{ variables.NamePrefix_local }}
     name: 'azureValues'
 
-  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-    displayName: 'Replace tokens in webDeploy.yaml'
+  - task: replacetokens@3
+    displayName: 'Replace tokens in serviceDeploy.yaml'
     inputs:
       targetFiles: src/serviceDeploy.yaml
   
   - task: AzureCLI@1
-    displayName: 'Azure CLI - Set Variables for Kubernetes'
+    displayName: 'Azure CLI - Deploy Service to Kubernetes'
     inputs:
       azureSubscription: '${{ variables.ConnectedServiceName_local }}'
       scriptLocation: inlineScript
       inlineScript: |
-      az aks get-credentials --subscription ${{ variables.SubscriptionId_local }} --resource-group ${{ variables.ResourceGroupName_local }} --name aks-ContosoTravel-${{ variables.NamePrefix_local }} --overwrite-existing
-      kubectl apply -f src/serviceDeploy.yaml
-      kubectl set image deployments/contosotravel-service contosotravel-service=acrContosoTravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-service-web:${{ build.buildId }}
+         az aks get-credentials --subscription $SubscriptionId_local --resource-group $ResourceGroupName --name $AKSName --overwrite-existing
+         kubectl apply -f src/serviceDeploy.yaml
+         kubectl set image deployments/contosotravel-service $ImageExpr
+    env:
+      NamePrefix_local: $(NamePrefix_local)
+      SubscriptionId_local: $(SubscriptionId_local)
+      ResourceGroupName: rg-${{ variables.NamePrefix_local }}
+      AKSName: aks-ContosoTravel-${{ variables.NamePrefix_local }}
+      ImageExpr: contosotravel-service=acrContosoTravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-travel-service:$(Build.BuildId)
+      
+  - task: AzureCLI@1
+    displayName: 'Azure CLI - Running configuration.ps1 and Deploy'
+    inputs:
+      azureSubscription: '${{ variables.ConnectedServiceName_local }}'
+      scriptLocation: inlineScript
+      inlineScript: |
+        sub=(az account show --query id --output tsv)
+        url=(az keyvault secret show --vault-name "kv${{ variables.namePrefix_local }}" --name "ContosoTravel--ServiceFQDN" --query value --output tsv)
+        topicId=(az eventgrid topic list --resource-group rg-{{ variables.namePrefix_local }} --subscription $sub --query [].id --output tsv)
+        az eventgrid event-subscription create --name {{ variables.namePrefix_local }}PurchaseItinerarySub --source-resource-id $topicId --endpoint $url
+      workingDirectory: $(Build.sourcesDirectory)      
+    condition: and(always(), eq(variables['eventing'], 'eventgrid'))    

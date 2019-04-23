@@ -39,25 +39,36 @@ jobs:
       azureSubscription: '${{ variables.ConnectedServiceName_local }}'
       scriptLocation: inlineScript
       inlineScript: |
-        "Get Info From Resource Group - appInsightsKey"
-        $appInsightsKey = az resource show --resource-group rg-${{ variables.NamePrefix_local }} --subscription ${{ variables.SubscriptionId_local }} --resource-type Microsoft.Insights/components --name ${{ variables.NamePrefix_local }}appInsightContosoTravel --query "properties.InstrumentationKey"
-        "Get Info From Resource Group - dnsZone"
-        $dnsZone = (az aks show --resource-group rg-${{ variables.NamePrefix_local }} --subscription ${{ variables.SubscriptionId_local }} --name aks-ContosoTravel-${{ variables.NamePrefix_local }} --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName).Replace('"', '')
+        appInsightsKey=$(az resource show --resource-group $ResourceGroupName --subscription $SubscriptionId_local --resource-type Microsoft.Insights/components --name $AppInsightsName --query "properties.InstrumentationKey"  --out tsv )
+        dnsZone=$(az aks show --resource-group $ResourceGroupName  --subscription $SubscriptionId_local --name $AKSName --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName  --out tsv )
         echo "##vso[task.setvariable variable=appInsightsKey;isOutput=true]$appInsightsKey"
         echo "##vso[task.setvariable variable=dnsZone;isOutput=true]$dnsZone"
+    env:
+      NamePrefix_local: $(NamePrefix_local)
+      SubscriptionId_local: $(SubscriptionId_local)
+      ResourceGroupName: rg-${{ variables.NamePrefix_local }}
+      AppInsightsName: ${{ variables.NamePrefix_local }}appInsightContosoTravel
+      AKSName: aks-ContosoTravel-${{ variables.NamePrefix_local }}
     name: 'azureValues'
 
-  - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  - task: replacetokens@3
     displayName: 'Replace tokens in webDeploy.yaml'
     inputs:
       targetFiles: src/webDeploy.yaml
   
   - task: AzureCLI@1
-    displayName: 'Azure CLI - Set Variables for Kubernetes'
+    displayName: 'Azure CLI - Deploy Web to Kubernetes'
     inputs:
       azureSubscription: '${{ variables.ConnectedServiceName_local }}'
       scriptLocation: inlineScript
       inlineScript: |
-      az aks get-credentials --subscription ${{ variables.SubscriptionId_local }} --resource-group ${{ variables.ResourceGroupName_local }} --name aks-ContosoTravel-${{ variables.NamePrefix_local }} --overwrite-existing
-      kubectl apply -f src/webdeploy.yaml
-      kubectl set image deployments/contosotravel-web contosotravel-web=acrContosoTravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-travel-web:${{ build.buildId }}
+         az aks get-credentials --subscription $SubscriptionId_local --resource-group $ResourceGroupName --name $AKSName --overwrite-existing
+         kubectl apply -f src/webdeploy.yaml
+         kubectl set image deployments/contosotravel-web $ImageExpr
+    env:
+      NamePrefix_local: $(NamePrefix_local)
+      SubscriptionId_local: $(SubscriptionId_local)
+      ResourceGroupName: rg-${{ variables.NamePrefix_local }}
+      AKSName: aks-ContosoTravel-${{ variables.NamePrefix_local }}
+      ImageExpr: contosotravel-web=acrContosoTravel${{ variables.NamePrefix_local }}.azurecr.io/contoso-web:$(Build.BuildId)
+

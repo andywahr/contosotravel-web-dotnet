@@ -20,14 +20,14 @@ spec:
     spec:
       containers:
       - name: contosotravel-web
-        image: acrContosoTravel#{azureValues.namePrefix}#.azurecr.io/contoso-travel-web
+        image: acrContosoTravel#{NamePrefix}#.azurecr.io/contoso-travel-web
         env:
         - name: KeyVaultUrl
-          value: https://kv#{azureValues.namePrefix}#.vault.azure.net/
+          value: https://kv#{NamePrefix}#.vault.azure.net/
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: #{azureValues.appInsightsKey}#
         - name: KeyVaultAccountName
-          value: kv#{azureValues.namePrefix}#       
+          value: kv#{NamePrefix}#       
 ---
 apiVersion: v1
 kind: Service
