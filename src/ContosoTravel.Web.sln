@@ -18,6 +18,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{0809BF3E-4A83-4B81-BC77-7D7ADAB0AFFD}"
 	ProjectSection(SolutionItems) = preProject
 		contosoSettings.json = contosoSettings.json
+		serviceDeploy.yaml = serviceDeploy.yaml
+		webDeploy.yaml = webDeploy.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildYamls", "BuildYamls", "{85EE7552-5DA9-4105-919D-31A3258CA2D5}"
