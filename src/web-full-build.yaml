@@ -2,7 +2,7 @@
 trigger: none
 
 variables:
-  BuildConfiguration: WebFull
+  BuildConfiguration: Release
   BuildPlatform: Any CPU
   BuildType: App
   ConnectedServiceName_local: $(ConnectedServiceName)
